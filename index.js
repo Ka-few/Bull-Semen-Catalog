@@ -106,11 +106,15 @@ function displayBulls(bulls) {
 
 // function to handle the deleting of a bull entry
 function deleteBull(id) {
+    //confirmation prompt to prevent accidental deletion
+    const confirmDelete = confirm("Are you sure you want to delete this Bull record?")
+    
+    if (!confirmDelete) return  //if user cancels exit else continue to delete
     fetch(`http://localhost:3000/bulls/${id}`, {
         method: "DELETE"
     })
     .then(()=> {
-        fetchBulls()
+        fetchBulls() //refresh the bull list after deletion
     })
     .catch(error => {
         console.log("there was an error deleting bull entry", error)
