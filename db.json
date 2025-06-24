@@ -1,7 +1,82 @@
 {
-  "users": [
-    { "id": 1, "username": "admin", "password": "admin123", "role": "admin" },
-    { "id": 2, "username": "farmer", "password": "farmer123", "role": "farmer" }
+  "bulls": [
+    {
+      "id": 1,
+      "name": "Kisii Max",
+      "breed": "Friesian",
+      "price": "2000",
+      "traits": "High milk yield",
+      "sire": "Kericho King",
+      "dam": "Eldoret Queen",
+      "breeder": "Highland Dairies",
+      "dob": "2021-01-10",
+      "image": "https://example.com/images/kisii-max.jpg",
+      "milkPerDay": "30"
+    },
+    {
+      "id": 2,
+      "name": "Machakos Giant",
+      "breed": "Boran",
+      "price": "1500",
+      "traits": "Heat tolerant, fast growth",
+      "sire": "Kitui Boss",
+      "dam": "Wote Lady",
+      "breeder": "Savanna Genetics",
+      "dob": "2020-06-18",
+      "image": "https://example.com/images/machakos-giant.jpg",
+      "milkPerDay": "0"
+    },
+    {
+      "id": 3,
+      "name": "Nyandarua Supreme",
+      "breed": "Guernsey",
+      "price": "1800",
+      "traits": "Excellent fertility and temperament",
+      "sire": "Thika Chief",
+      "dam": "Limuru Star",
+      "breeder": "Golden Field Farm",
+      "dob": "2021-03-14",
+      "image": "https://example.com/images/nyandarua-supreme.jpg",
+      "milkPerDay": "25"
+    },
+    {
+      "id": 4,
+      "name": "Kericho Thunder",
+      "breed": "Jersey",
+      "price": "1700",
+      "traits": "High butterfat content in milk",
+      "sire": "Kisumu Blaze",
+      "dam": "Muranga Beauty",
+      "breeder": "Golden Herds Ltd.",
+      "dob": "2022-07-10",
+      "image": "https://example.com/images/kericho-thunder.jpg",
+      "milkPerDay": "27"
+    },
+    {
+      "id": 5,
+      "name": "Murang'a Legend",
+      "breed": "Ayrshire",
+      "price": "1900",
+      "traits": "Balanced temperament, good udder",
+      "sire": "Nakuru Noble",
+      "dam": "Kiambu Princess",
+      "breeder": "Lush Dairies",
+      "dob": "2021-09-20",
+      "image": "https://example.com/images/muranga-legend.jpg",
+      "milkPerDay": "28"
+    },
+    {
+      "id": 6,
+      "name": "Embu Titan",
+      "breed": "Sahiwal",
+      "price": "1600",
+      "traits": "Disease resistance, high heat tolerance",
+      "sire": "Isiolo Iron",
+      "dam": "Meru Miracle",
+      "breeder": "Dryland Genetics",
+      "dob": "2022-02-05",
+      "image": "https://example.com/images/embu-titan.jpg",
+      "milkPerDay": "22"
+    }
   ]
-  
 }
