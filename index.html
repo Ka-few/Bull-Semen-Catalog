@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bull Semen Catalog</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <h1>Bull Semen Catalog</h1>  
+
+  <!-- Button to toggle Show/hide add-bull-Form -->
+  <button id="add-btn">Add New Bull</button>
+
+  <!-- Bull Entry Form (stays hidden by default) -->
+  
+  <div id="bull-container">
+    <h2>Add New Bull</h2>
+    <form id="add-bull-form">
+      <input type="text" id="bull-name" placeholder="Name" required>
+      <input type="text" id="bull-breed" placeholder="Breed" required>
+      <input type="text" id="bull-price" placeholder="Price" required>
+      <input type="text" id="bull-traits" placeholder="Traits" required>
+      <input type="number" id="bull-milk" placeholder="Milk Production (Liters/Day)" required>
+      <input type="text" id="bull-sire" placeholder="Sire" required>
+      <input type="text" id="bull-dam" placeholder="Dam" required>
+      <input type="text" id="bull-breeder" placeholder="Breeder" required>
+      <input type="date" id="bull-dob" placeholder="Date of Birth" required>
+      <input type="url" id="bull-image" placeholder="Image URL" required>
+      <button type="submit">Add Bull</button>
+    </form>
+  </div>
+
+  <!-- Bull List Display -->
+  <div id="catalog-view">
+    <h2>All Bulls in Catalog</h2>
+    <div id="bull-list">
+      <!-- Bulls will be dynamically added here -->
+    </div>
+  </div>
+
+  <script src="./index.js"></script>
+</body>
+</html>
