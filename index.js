@@ -1,39 +1,14 @@
 'use strict'
-let loginForm = document.getElementById('login-form')
-let logSection = document.getElementById('login-section')
-let mainContainer = document.getElementById('main-cont')
-let userRole = document.getElementById('user-role')
-let loginError = document.getElementById('login-error')
-let adminPanel = document.getElementById('admin-panel')
+let addNewBull = document.getElementById('add-btn');
+let bullContainer = document.getElementById('bull-container');
 
-//login event handler
-loginForm.addEventListener('submit', function(e){
-    e.preventDefault()
+//add the create a new entry event, show and hide the form
+addNewBull.addEventListener("click", () => {
+  const isHidden = bullContainer.style.display === "none";
+  bullContainer.style.display = isHidden ? "block" : "none";
+  addNewBull.textContent = isHidden ? "Hide Form" : "Add New Bull";
+});
 
-    const userName = document.getElementById('username').value
-    const pass = document.getElementById('password').value
 
-    //login fetch
-    fetch(`http://localhost:3000/users?username=${userName}&password=${pass}`)
-        .then(res=>res.json())
-        .then(users=>{
-            if (users.length > 0) {
-                const user = users[0]
-                logSection.style.display = 'none'
-                mainContainer.style.display = 'block'
-                userRole.textContent = user.role
 
-                //if user is admin show admin control panel
-                if (user.role === 'admin') {
-                    adminPanel.style.diplay = 'block'
-                }
-                
-            } else {
-                loginError.textContent = 'Your Username and Password do not match! Please try again'
-            }
-        })
-        .catch(err=>{
-            loginError.textContent = 'There was an error connecting to the server'
-            console.log(err)
-        })
-})
+
