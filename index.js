@@ -12,6 +12,48 @@ addNewBull.addEventListener("click", () => {
 // this calls fetchBulls()after the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
   fetchBulls();
+  let addBullForm = document.getElementById('add-bull-form')
+
+  addBullForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const newBull = {
+        name: document.getElementById('bull-name').value,
+        breed: document.getElementById('bull-breed').value,
+        price: document.getElementById('bull-price').value,
+        traits: document.getElementById('bull-traits').value,
+        sire: document.getElementById('bull-sire').value,
+        dam: document.getElementById('bull-dam').value,
+        breeder: document.getElementById('bull-breeder').value,
+        dob: document.getElementById('bull-dob').value,
+        image: document.getElementById('bull-image').value,
+        milkPerDay: document.getElementById('bull-milk').value
+
+    }
+
+    fetch("http://localhost:3000/bulls", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newBull)
+    })
+    .then(res => res.json())
+    .then(addedBull => {
+        fetchBulls()
+        addBullForm.reset()
+
+        const successMessage = document.getElementById('success-message')
+        successMessage.style.display = 'block'
+
+        setTimeout(()=> {
+            successMessage.style.display = "none"
+        }, 2000)
+    })
+    .catch(error => {
+        console.log("There was an error adding the bull entry", error)
+    })
+  })
 });
 
 //this function gets the list of bulls in the server.
@@ -19,21 +61,21 @@ function fetchBulls() {
   fetch("http://localhost:3000/bulls")
     .then(response => response.json())
     .then(bulls => {
-      displayBulls(bulls);
+      displayBulls(bulls)
     })
     .catch(error => {
-      console.error("Error fetching bulls:", error);
-    });
+      console.error("Error fetching bulls:", error)
+    })
 }
 
 //this function displays the list of bulls available in the server
 function displayBulls(bulls) {
-  const bullList = document.getElementById("bull-list");
+  const bullList = document.getElementById("bull-list")
   bullList.innerHTML = ""; // Clear any existing bulls
 
   bulls.forEach(bull => {
-    const bullCard = document.createElement("div");
-    bullCard.className = "bull-card";
+    const bullCard = document.createElement("div")
+    bullCard.className = "bull-card"
 
     bullCard.innerHTML = `
       <img src="${bull.image}" alt="${bull.name}" width="200">
@@ -48,8 +90,8 @@ function displayBulls(bulls) {
       <p><strong>DOB:</strong> ${bull.dob}</p>
     `;
 
-    bullList.appendChild(bullCard);
-  });
+    bullList.appendChild(bullCard)
+  })
 }
 
 
