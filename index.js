@@ -88,10 +88,33 @@ function displayBulls(bulls) {
       <p><strong>Dam:</strong> ${bull.dam}</p>
       <p><strong>Breeder:</strong> ${bull.breeder}</p>
       <p><strong>DOB:</strong> ${bull.dob}</p>
+      <button class ="delete-btn" data-id="${bull.id}">Delete</button>
     `;
 
     bullList.appendChild(bullCard)
   })
+
+  //add event listeners for delete buttons
+  const deleteButtons = document.querySelectorAll('.delete-btn')
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const id = this.dataset.id
+        deleteBull(id)
+    })
+  })
+}
+
+// function to handle the deleting of a bull entry
+function deleteBull(id) {
+    fetch(`http://localhost:3000/bulls/${id}`, {
+        method: "DELETE"
+    })
+    .then(()=> {
+        fetchBulls()
+    })
+    .catch(error => {
+        console.log("there was an error deleting bull entry", error)
+    })
 }
 
 
