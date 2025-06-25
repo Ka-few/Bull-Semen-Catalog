@@ -1,12 +1,12 @@
 'use strict'
-let addNewBull = document.getElementById('add-btn');
-let bullContainer = document.getElementById('bull-container');
+let addNewBull = document.getElementById('add-btn')
+let bullContainer = document.getElementById('bull-container')
 
 //add the create a new entry event, show and hide the form
 addNewBull.addEventListener("click", () => {
-  const isHidden = bullContainer.style.display === "none";
-  bullContainer.style.display = isHidden ? "block" : "none";
-  addNewBull.textContent = isHidden ? "Hide Form" : "Add New Bull";
+  const isHidden = bullContainer.style.display === "none"
+  bullContainer.style.display = isHidden ? "block" : "none"
+  addNewBull.textContent = isHidden ? "Hide Form" : "Add New Bull"
 });
 
 // this calls fetchBulls()after the DOM is loaded
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 2000)
     })
     .catch(error => {
-        console.log("There was an error adding the bull entry", error)
+        console.error("There was an error adding the bull entry", error)
     })
   })
 });
@@ -83,8 +83,9 @@ function displayBulls(bulls) {
     const detailsId = `details-${bull.id}`
 
     bullCard.innerHTML = `
-      <h3 class="bull-name" style="cursor: pointer; color: #2a4;">${bull.name}</h3>
-      <img src="${bull.image}" alt="${bull.name}" width="200">
+      <h3 class="bull-name toggle-trigger">${bull.name}</h3>
+      <img src="${bull.image}" alt="${bull.name}" width="200" class="toggle-trigger" style="cursor: pointer; border-radius: 6px;">
+      <div class="bull-details">
       <p><strong>Breed:</strong> ${bull.breed}</p>
       <p><strong>Price:</strong> KES ${bull.price}</p>
       <p><strong>Milk Per Day:</strong> ${bull.milkPerDay} Liters</p>
@@ -94,24 +95,29 @@ function displayBulls(bulls) {
       <p><strong>Breeder:</strong> ${bull.breeder}</p>
       <p><strong>DOB:</strong> ${bull.dob}</p>
       <button class ="delete-btn" data-id="${bull.id}">Delete</button>
+      </div>
     `;
 
     bullList.appendChild(bullCard)
   })
 
   //Handling the collapsible behavior
-  const bullNames = document.querySelectorAll('.bull-name')
+  const triggers = document.querySelectorAll(".toggle-trigger")
 
-  bullNames.forEach(nameEl => {
-    nameEl.addEventListener('click', () => {
-        const allDetails = document.querySelectorAll('.bull-details')
+  triggers.forEach(trigger => {
+    trigger.addEventListener("click", () => {
+      const bullCard = trigger.closest(".bull-card")
+      const details = bullCard.querySelector(".bull-details")
 
-        allDetails.forEach(section => {
-            section.style.display = 'none'  //hide all
-        })
+      // Hide all other details
+      document.querySelectorAll(".bull-details").forEach(section => {
+        if (section !== details) section.style.display = "none"
+      });
 
-        const details = nameEl.nextElementSibling
-        details.style.display = 'block' //show selected
+        
+        //show selected bull's details
+        const isVisible = details.style.display === 'block'
+        details.style.display = isVisible ? 'none' : 'block' 
     })
 
   })
@@ -139,7 +145,7 @@ function deleteBull(id) {
         fetchBulls() //refresh the bull list after deletion
     })
     .catch(error => {
-        console.log("there was an error deleting bull entry", error)
+        console.error("there was an error deleting bull entry", error)
     })
 }
 
