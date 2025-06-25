@@ -28,12 +28,17 @@
       <input type="url" id="bull-image" placeholder="Image URL" required>
       <button type="submit">Add Bull</button>
     </form>
+    <div id="success-message" style="display: none; color: green; margin-top: 10px;">
+  ✅ Bull added successfully!
+    </div>
+
   </div>
 
   <!-- Bull List Display -->
   <div id="catalog-view">
-    <h2>All Bulls in Catalog</h2>
-    <div id="bull-list">
+    <h2>All Available Bulls in our Catalog</h2>
+    <p class="instruction">🛈 Click on the bull’s name or image to view more details.</p>
+    <div id="bull-list" class="bull-grid">
       <!-- Bulls will be dynamically added here -->
     </div>
   </div>
