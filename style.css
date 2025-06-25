@@ -1,0 +1,165 @@
+/* General Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body Styling */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #FEF7CD;
+  padding: 20px;
+  color: #333;
+  max-width: 800px;
+  margin: auto;
+}
+
+/* Headings */
+h1, h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #EA384C;
+}
+
+/* Add Button */
+#add-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto 30px auto;
+}
+
+#add-btn:hover {
+  background-color: #218838;
+}
+
+/* Form Container */
+#bull-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: none; /* Hide by default */
+}
+
+/* Form Inputs */
+#add-bull-form input,
+#add-bull-form button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#add-bull-form input:focus {
+  border-color: #28a745;
+  outline: none;
+}
+
+#add-bull-form button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#add-bull-form button:hover {
+  background-color: #0069d9;
+}
+
+/* Success Message */
+#success-message {
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Bull List Section */
+#catalog-view {
+  margin-top: 40px;
+}
+
+/* Bull Card */
+.bull-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 420px; /* Ensures equal height on most content */
+}
+
+
+/* Bull Name */
+.bull-name {
+  font-size: 1.3em;
+  font-weight: bold;
+  cursor: pointer;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.bull-name:hover {
+  text-decoration: underline;
+}
+
+/* Bull Details (initially hidden) */
+.bull-details {
+  margin-top: 10px;
+  display: none;
+}
+
+/* Delete Button */
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+/* Image */
+.bull-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.bull-card p {
+  font-size: 14px;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.bull-card button.delete-btn {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+
+/* Grid Layout for Cards */
+.bull-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
