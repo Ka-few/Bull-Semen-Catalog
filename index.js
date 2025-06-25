@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   addBullForm.addEventListener('submit', function(e) {
     e.preventDefault();
 
+    //create bull entry object to be posted to the server
     const newBull = {
         name: document.getElementById('bull-name').value,
         breed: document.getElementById('bull-breed').value,
@@ -31,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+    //post the bull entry to the server
     fetch("http://localhost:3000/bulls", {
         method: "POST",
         headers: {
@@ -42,10 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(addedBull => {
         fetchBulls()
         addBullForm.reset()
-
+        //display success message after a successful addition of a bull entry
         const successMessage = document.getElementById('success-message')
         successMessage.style.display = 'block'
-
+        //hide success message after 2 seconds
         setTimeout(()=> {
             successMessage.style.display = "none"
         }, 2000)
@@ -72,14 +74,17 @@ function fetchBulls() {
 function displayBulls(bulls) {
   const bullList = document.getElementById("bull-list")
   bullList.innerHTML = ""; // Clear any existing bulls
-
+  
+  //create a bull card for presenting the bull information
   bulls.forEach(bull => {
     const bullCard = document.createElement("div")
     bullCard.className = "bull-card"
 
+    const detailsId = `details-${bull.id}`
+
     bullCard.innerHTML = `
+      <h3 class="bull-name" style="cursor: pointer; color: #2a4;">${bull.name}</h3>
       <img src="${bull.image}" alt="${bull.name}" width="200">
-      <h3>${bull.name}</h3>
       <p><strong>Breed:</strong> ${bull.breed}</p>
       <p><strong>Price:</strong> KES ${bull.price}</p>
       <p><strong>Milk Per Day:</strong> ${bull.milkPerDay} Liters</p>
@@ -92,6 +97,23 @@ function displayBulls(bulls) {
     `;
 
     bullList.appendChild(bullCard)
+  })
+
+  //Handling the collapsible behavior
+  const bullNames = document.querySelectorAll('.bull-name')
+
+  bullNames.forEach(nameEl => {
+    nameEl.addEventListener('click', () => {
+        const allDetails = document.querySelectorAll('.bull-details')
+
+        allDetails.forEach(section => {
+            section.style.display = 'none'  //hide all
+        })
+
+        const details = nameEl.nextElementSibling
+        details.style.display = 'block' //show selected
+    })
+
   })
 
   //add event listeners for delete buttons
