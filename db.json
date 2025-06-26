@@ -1,32 +1,6 @@
 {
   "bulls": [
     {
-      "id": 1,
-      "name": "Kisii Max",
-      "breed": "Friesian",
-      "price": "2000",
-      "traits": "High milk yield",
-      "sire": "Kericho King",
-      "dam": "Eldoret Queen",
-      "breeder": "Highland Dairies",
-      "dob": "2021-01-10",
-      "image": "https://example.com/images/kisii-max.jpg",
-      "milkPerDay": "30"
-    },
-    {
-      "id": 2,
-      "name": "Machakos Giant",
-      "breed": "Boran",
-      "price": "1500",
-      "traits": "Heat tolerant, fast growth",
-      "sire": "Kitui Boss",
-      "dam": "Wote Lady",
-      "breeder": "Savanna Genetics",
-      "dob": "2020-06-18",
-      "image": "https://example.com/images/machakos-giant.jpg",
-      "milkPerDay": "0"
-    },
-    {
       "id": 3,
       "name": "Nyandarua Supreme",
       "breed": "Guernsey",
@@ -36,7 +10,7 @@
       "dam": "Limuru Star",
       "breeder": "Golden Field Farm",
       "dob": "2021-03-14",
-      "image": "https://example.com/images/nyandarua-supreme.jpg",
+      "image": "https://lh4.googleusercontent.com/proxy/7uSA389Hj330SQbpladsUlmbhBUE_TcQMJr_AmqjtWdRgxcF4mcKGY6huzr8HUtUL7YLNBjze0sXkQN5VKLz0XIX4D8SRQ3vydarlZnD1EYBk19Fp1pCr_C80MW3Py4bhQR9y3o",
       "milkPerDay": "25"
     },
     {
@@ -49,21 +23,8 @@
       "dam": "Muranga Beauty",
       "breeder": "Golden Herds Ltd.",
       "dob": "2022-07-10",
-      "image": "https://example.com/images/kericho-thunder.jpg",
+      "image": "https://d1r5hvvxe7dolz.cloudfront.net/media/images/Jersey_picks.width-500.jpg",
       "milkPerDay": "27"
-    },
-    {
-      "id": 5,
-      "name": "Murang'a Legend",
-      "breed": "Ayrshire",
-      "price": "1900",
-      "traits": "Balanced temperament, good udder",
-      "sire": "Nakuru Noble",
-      "dam": "Kiambu Princess",
-      "breeder": "Lush Dairies",
-      "dob": "2021-09-20",
-      "image": "https://example.com/images/muranga-legend.jpg",
-      "milkPerDay": "28"
     },
     {
       "id": 6,
@@ -75,8 +36,47 @@
       "dam": "Meru Miracle",
       "breeder": "Dryland Genetics",
       "dob": "2022-02-05",
-      "image": "https://example.com/images/embu-titan.jpg",
+      "image": "https://5.imimg.com/data5/FR/BU/MY-55022487/sahiwalbull1-500x500.jpg",
       "milkPerDay": "22"
+    },
+    {
+      "name": "Githunguri champion",
+      "breed": "Holstein Friesian",
+      "price": "3000",
+      "traits": "Straight udder",
+      "sire": "Ivan Kasongo",
+      "dam": "Bella Imani",
+      "breeder": "Githunguri Dairies",
+      "dob": "2021-07-18",
+      "image": "https://d1r5hvvxe7dolz.cloudfront.net/media/images/112080_Fire_up_4yr.original.jpg",
+      "milkPerDay": "38",
+      "id": 7
+    },
+    {
+      "name": "Rongai Winner",
+      "breed": "Fleckvieh",
+      "price": "4500",
+      "traits": "High butter fat content milk",
+      "sire": "Muller Stutgart",
+      "dam": "Sue Mrembo",
+      "breeder": "Rongao West Farm",
+      "dob": "2018-08-10",
+      "image": "https://www.ggi-spermex.de/asset/580/004969/Typical-Fleckvieh-bull-HOKUSPOKUS-son-HOGWARTS-4-years-old-.jpg",
+      "milkPerDay": "33",
+      "id": 8
+    },
+    {
+      "name": "Ragnar Shujaa",
+      "breed": "Holstein Friesian",
+      "price": "4500",
+      "traits": "Tall with straight udder",
+      "sire": "Akuku bomoa",
+      "dam": "Angel creamer",
+      "breeder": "Westline Farm",
+      "dob": "2017-06-25",
+      "image": "https://licnz.com/wp-content/uploads/2020/10/Holstein-Friesian-bull-Mint-Edition-Front-on.jpg",
+      "milkPerDay": "42",
+      "id": 9
     }
   ]
 }

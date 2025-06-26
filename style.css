@@ -38,6 +38,21 @@ h1, h2 {
   background-color: #218838;
 }
 
+.instruction {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-left: 5px solid #007bff;
+  border-radius: 4px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 /* Form Container */
 #bull-container {
   background-color: white;
@@ -138,11 +153,14 @@ h1, h2 {
 /* Image */
 .bull-card img {
   width: 100%;
-  height: 160px;
-  object-fit: cover;
+  max-height: 180px;
+  object-fit: contain;  
   border-radius: 6px;
+  background-color: #f8f8f8;
+  padding: 5px;
   margin-bottom: 10px;
 }
+
 
 .bull-card p {
   font-size: 14px;
