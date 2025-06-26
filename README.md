@@ -6,4 +6,5 @@ Notice for Image attribution.
 The images used in this application are for educational purposes only. I do not own the images and I have used the images without explicit rights from the owners.
 
 Instructions for use
-Open the index.html file in the browser.
+Open this link to run.
+https://ka-few.github.io/Bull-Semen-Catalog/
