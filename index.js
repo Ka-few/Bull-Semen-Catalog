@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     //post the bull entry to the server
-    fetch("http://localhost:3000/bulls", {
+    fetch("https://bull-semen-catalog-2.onrender.com/bulls", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //this function gets the list of bulls in the server.
 function fetchBulls() {
-  fetch("http://localhost:3000/bulls")
+  fetch("https://bull-semen-catalog-2.onrender.com/bulls")
     .then(response => response.json())
     .then(bulls => {
       displayBulls(bulls)
@@ -138,7 +138,7 @@ function deleteBull(id) {
     const confirmDelete = confirm("Are you sure you want to delete this Bull record?")
     
     if (!confirmDelete) return  //if user cancels exit else continue to delete
-    fetch(`http://localhost:3000/bulls/${id}`, {
+    fetch(`https://bull-semen-catalog-2.onrender.com/bulls/${id}`, {
         method: "DELETE"
     })
     .then(()=> {
