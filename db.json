@@ -1,4 +1,8 @@
 {
+  "users": [
+    { "id": 1, "username": "admin", "password": "adminpass", "role": "admin" },
+    { "id": 2, "username": "farmer", "password": "farmerpass", "role": "farmer" }
+  ],
   "bulls": [
     {
       "id": 3,

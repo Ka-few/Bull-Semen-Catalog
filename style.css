@@ -7,12 +7,9 @@
 
 /* Body Styling */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #FEF7CD;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
   padding: 20px;
-  color: #333;
-  max-width: 800px;
-  margin: auto;
 }
 
 /* Headings */
@@ -32,6 +29,7 @@ h1, h2 {
   cursor: pointer;
   display: block;
   margin: 0 auto 30px auto;
+  transition: background 0.2s ease;
 }
 
 #add-btn:hover {
@@ -44,23 +42,20 @@ h1, h2 {
   color: #333;
   background-color: rgba(255, 255, 255, 0.85);
   padding: 10px 15px;
-  margin-bottom: 20px;
   border-left: 5px solid #007bff;
   border-radius: 4px;
   max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto 20px auto;
 }
-
 
 /* Form Container */
 #bull-container {
-  background-color: white;
+  background: #fff;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 40px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  display: none; /* Hide by default */
+  display: none;
 }
 
 /* Form Inputs */
@@ -83,7 +78,7 @@ h1, h2 {
   color: white;
   border: none;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s ease;
 }
 
 #add-bull-form button:hover {
@@ -92,8 +87,14 @@ h1, h2 {
 
 /* Success Message */
 #success-message {
-  font-weight: bold;
+  display: none;
+  background: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 4px;
   text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 /* Bull List Section */
@@ -103,25 +104,28 @@ h1, h2 {
 
 /* Bull Card */
 .bull-card {
-  background-color: #fff;
+  background: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 420px; /* Ensures equal height on most content */
+  min-height: 420px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.bull-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
 
-/* Bull Name */
 .bull-name {
   font-size: 1.3em;
   font-weight: bold;
-  cursor: pointer;
   color: #007bff;
+  cursor: pointer;
   margin-bottom: 10px;
 }
 
@@ -129,38 +133,13 @@ h1, h2 {
   text-decoration: underline;
 }
 
-/* Bull Details (initially hidden) */
 .bull-details {
-  margin-top: 10px;
   display: none;
-}
-
-/* Delete Button */
-.delete-btn {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
   margin-top: 10px;
-  cursor: pointer;
-}
-
-.delete-btn:hover {
-  background-color: #c82333;
-}
-
-/* Image */
-.bull-card img {
-  width: 100%;
-  max-height: 180px;
-  object-fit: contain;  
+  background: #f9f9f9;
+  padding: 10px;
   border-radius: 6px;
-  background-color: #f8f8f8;
-  padding: 5px;
-  margin-bottom: 10px;
 }
-
 
 .bull-card p {
   font-size: 14px;
@@ -168,16 +147,58 @@ h1, h2 {
   line-height: 1.4;
 }
 
-.bull-card button.delete-btn {
-  margin-top: auto;
-  align-self: flex-start;
+.bull-card img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #f8f8f8;
+  padding: 5px;
+  margin-bottom: 10px;
 }
 
+.delete-btn, .edit-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  margin-top: 8px;
+}
 
-/* Grid Layout for Cards */
+.delete-btn {
+  background: #dc3545;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+}
+
+.edit-btn {
+  background: #17a2b8;
+}
+
+.edit-btn:hover {
+  background: #138496;
+}
+
 .bull-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   margin-top: 20px;
+}
+
+.favorite-btn {
+  background-color: #ffcc00;
+  color: #333;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.favorite-btn:hover {
+  background-color: #e6b800;
 }
