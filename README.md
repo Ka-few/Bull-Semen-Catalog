@@ -11,6 +11,11 @@ The images used in this application are for educational purposes only. I do not 
 
 
 ## Instructions for use
+Login credentials
+username admin
+password adminpass
+username farmer
+password farmerpass
 Open this link to run.
 ### View live site
 Visit the deployed aplication at: [link here] (https://ka-few.github.io/Bull-Semen-Catalog/)
