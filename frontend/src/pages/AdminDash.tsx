@@ -23,6 +23,7 @@ const AdminDash = () => {
   const [newBullBreed, setNewBullBreed] = useState('');
   const [newBullPrice, setNewBullPrice] = useState('');
   const [newBullMilk, setNewBullMilk] = useState('');
+  const [newBullImage, setNewBullImage] = useState('');
 
   const fetchBulls = async () => {
     const res = await api.get('/bulls');
@@ -68,12 +69,14 @@ const AdminDash = () => {
         breed: newBullBreed,
         semen_price: parseFloat(newBullPrice),
         milk_yield: parseFloat(newBullMilk),
+        image_url: newBullImage || undefined,
       });
       fetchBulls();
       setNewBullName('');
       setNewBullBreed('');
       setNewBullPrice('');
       setNewBullMilk('');
+      setNewBullImage('');
       alert("Bull created successfully");
     } catch (err) {
       alert("Failed to create bull");
@@ -98,6 +101,7 @@ const AdminDash = () => {
             <input type="text" placeholder="Breed" value={newBullBreed} onChange={e => setNewBullBreed(e.target.value)} required style={{ padding: '0.5rem' }} />
             <input type="number" placeholder="Price" value={newBullPrice} onChange={e => setNewBullPrice(e.target.value)} required style={{ padding: '0.5rem' }} />
             <input type="number" placeholder="Milk Yield" value={newBullMilk} onChange={e => setNewBullMilk(e.target.value)} required style={{ padding: '0.5rem' }} />
+            <input type="text" placeholder="Image URL (optional)" value={newBullImage} onChange={e => setNewBullImage(e.target.value)} style={{ padding: '0.5rem' }} />
             <button type="submit" style={{ padding: '0.5rem', backgroundColor: '#10b981', color: 'white', border: 'none', cursor: 'pointer' }}>Add Bull</button>
           </form>
 

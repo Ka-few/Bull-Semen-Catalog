@@ -1,35 +1,31 @@
 const { getDb } = require('../db');
 
-// Get all agri-suppliers (can be filtered by distance in the future)
+// Get all agri-suppliers (optionally sorted by distance)
 exports.getAgriSuppliers = async (req, res) => {
     try {
         const db = await getDb();
-        const { lat, lng, radius_km } = req.query;
+        const { lat, lng } = req.query;
         let suppliers = await db.all('SELECT * FROM agri_suppliers');
 
         if (lat && lng) {
             const originLat = parseFloat(lat);
             const originLng = parseFloat(lng);
-            const maxRadius = radius_km ? parseFloat(radius_km) : 100; // default 100km
 
-            suppliers = suppliers.filter(supplier => {
-                if (supplier.latitude == null || supplier.longitude == null) return false;
-                
+            suppliers = suppliers.map(supplier => {
+                if (supplier.latitude == null || supplier.longitude == null) return supplier;
                 const R = 6371;
                 const dLat = (supplier.latitude - originLat) * Math.PI / 180;
                 const dLon = (supplier.longitude - originLng) * Math.PI / 180;
-                const a = 
+                const a =
                     Math.sin(dLat/2) * Math.sin(dLat/2) +
-                    Math.cos(originLat * Math.PI / 180) * Math.cos(supplier.latitude * Math.PI / 180) * 
+                    Math.cos(originLat * Math.PI / 180) * Math.cos(supplier.latitude * Math.PI / 180) *
                     Math.sin(dLon/2) * Math.sin(dLon/2);
-                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-                const distance = R * c;
-                
-                supplier.distance_km = distance;
-                return distance <= maxRadius;
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                supplier.distance_km = R * c;
+                return supplier;
             });
-            
-            suppliers.sort((a, b) => a.distance_km - b.distance_km);
+
+            suppliers.sort((a, b) => (a.distance_km || 0) - (b.distance_km || 0));
         }
 
         res.json(suppliers);

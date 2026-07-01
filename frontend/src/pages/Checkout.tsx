@@ -30,8 +30,8 @@ export default function Checkout() {
         setFarmerLocation({ lat, lng });
         try {
             const [vetsRes, suppliersRes] = await Promise.all([
-                api.get(`/vets?lat=${lat}&lng=${lng}&verified=true`),
-                api.get(`/agri-suppliers?lat=${lat}&lng=${lng}`)
+                api.get(`/vets?lat=${lat}&lng=${lng}&verified=true&radius_km=10000`),
+                api.get(`/agri-suppliers?lat=${lat}&lng=${lng}&radius_km=10000`)
             ]);
             setVets(vetsRes.data);
             setAgriSuppliers(suppliersRes.data);
@@ -61,15 +61,14 @@ export default function Checkout() {
 
         setLoading(true);
         try {
-            await api.post('/orders', {
+            const res = await api.post('/orders', {
                 vet_id: selectedVet,
                 agri_supplier_id: selectedSupplier,
                 delivery_lat: farmerLocation.lat,
                 delivery_lng: farmerLocation.lng
             });
-            alert('Order placed successfully! It has been allocated.');
             fetchCart(); // Clear cart
-            navigate('/');
+            navigate(`/payment/${res.data.id}`);
         } catch (err) {
             alert("Failed to place order.");
             console.error(err);
@@ -118,9 +117,9 @@ export default function Checkout() {
                                 <span className="w-8 h-8 rounded-full flex items-center justify-center text-white mr-3 bg-blue-600">2</span>
                                 Select Vet and Supplier
                             </h3>
-                            <p className="text-gray-600 mb-4">Choose a nearby Vet for the service, and a Supplier from where they will pick up the semen.</p>
-                            
-                            <GeospatialView 
+                            <p className="text-gray-600 mb-4">Choose a Vet for the service, and a Supplier where they will pick up the semen. Click the pins on the map, or select from the lists below.</p>
+
+                            <GeospatialView
                                 farmerLocation={farmerLocation!}
                                 vets={vets}
                                 agriSuppliers={agriSuppliers}
@@ -129,6 +128,54 @@ export default function Checkout() {
                                 onSelectVet={setSelectedVet}
                                 onSelectSupplier={setSelectedSupplier}
                             />
+
+                            {/* Vet List */}
+                            <div className="mt-6">
+                                <h4 className="font-semibold text-green-700 mb-2">🩺 Available Vets</h4>
+                                {vets.length === 0 ? (
+                                    <p className="text-gray-400 text-sm">No vets found.</p>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        {vets.map(vet => (
+                                            <button
+                                                key={vet.id}
+                                                onClick={() => setSelectedVet(vet.id)}
+                                                className={`text-left p-3 rounded-lg border-2 transition-all ${selectedVet === vet.id ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-green-300'}`}
+                                            >
+                                                <div className="font-bold text-gray-800">{vet.full_name}</div>
+                                                <div className="text-sm text-gray-500">{vet.county}, {vet.sub_county}</div>
+                                                {vet.service_fee && <div className="text-sm font-medium text-green-700">KES {vet.service_fee} service fee</div>}
+                                                {vet.distance_km && <div className="text-xs text-gray-400">{vet.distance_km.toFixed(0)} km away</div>}
+                                                {selectedVet === vet.id && <div className="text-xs font-bold text-green-600 mt-1">✓ Selected</div>}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Supplier List */}
+                            <div className="mt-6">
+                                <h4 className="font-semibold text-orange-600 mb-2">🏪 Available Suppliers (Pickup Points)</h4>
+                                {agriSuppliers.length === 0 ? (
+                                    <p className="text-gray-400 text-sm">No suppliers found.</p>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        {agriSuppliers.map(supplier => (
+                                            <button
+                                                key={supplier.id}
+                                                onClick={() => setSelectedSupplier(supplier.id)}
+                                                className={`text-left p-3 rounded-lg border-2 transition-all ${selectedSupplier === supplier.id ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-orange-300'}`}
+                                            >
+                                                <div className="font-bold text-gray-800">{supplier.business_name}</div>
+                                                <div className="text-sm text-gray-500">{supplier.address}</div>
+                                                {supplier.phone_number && <div className="text-sm text-gray-500">{supplier.phone_number}</div>}
+                                                {supplier.distance_km && <div className="text-xs text-gray-400">{supplier.distance_km.toFixed(0)} km away</div>}
+                                                {selectedSupplier === supplier.id && <div className="text-xs font-bold text-orange-600 mt-1">✓ Selected</div>}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>

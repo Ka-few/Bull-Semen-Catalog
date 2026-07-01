@@ -5,7 +5,7 @@ import api from '../api/config';
 const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState<'farmer' | 'vet'>('farmer');
+    const [role, setRole] = useState<'farmer' | 'vet' | 'agri-supplier'>('farmer');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -63,11 +63,12 @@ const Register = () => {
                     <label style={{ display: 'block', marginBottom: '0.5rem', color: '#4b5563' }}>I am a...</label>
                     <select
                         value={role}
-                        onChange={(e) => setRole(e.target.value as 'farmer' | 'vet')}
+                        onChange={(e) => setRole(e.target.value as 'farmer' | 'vet' | 'agri-supplier')}
                         style={inputStyle}
                     >
                         <option value="farmer">Dairy Farmer</option>
                         <option value="vet">Veterinary AI Technician</option>
+                        <option value="agri-supplier">Agri-Supplier Depot</option>
                     </select>
                 </div>
                 <button type="submit" style={btnStyle}>Register</button>

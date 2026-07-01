@@ -59,32 +59,27 @@ exports.getVets = async (req, res) => {
 
         let vets = await db.all(query, params);
 
-        // Perform geospatial filtering if lat and lng are provided
+        // Compute distance for all vets if lat/lng given (no radius cutoff)
         if (lat && lng) {
             const originLat = parseFloat(lat);
             const originLng = parseFloat(lng);
-            const maxRadius = radius_km ? parseFloat(radius_km) : 50; // default 50km
 
-            vets = vets.filter(vet => {
-                if (vet.latitude == null || vet.longitude == null) return false;
-                
-                // Haversine formula
-                const R = 6371; // Radius of the earth in km
+            vets = vets.map(vet => {
+                if (vet.latitude == null || vet.longitude == null) return vet;
+                const R = 6371;
                 const dLat = (vet.latitude - originLat) * Math.PI / 180;
                 const dLon = (vet.longitude - originLng) * Math.PI / 180;
-                const a = 
+                const a =
                     Math.sin(dLat/2) * Math.sin(dLat/2) +
-                    Math.cos(originLat * Math.PI / 180) * Math.cos(vet.latitude * Math.PI / 180) * 
+                    Math.cos(originLat * Math.PI / 180) * Math.cos(vet.latitude * Math.PI / 180) *
                     Math.sin(dLon/2) * Math.sin(dLon/2);
-                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-                const distance = R * c;
-                
-                vet.distance_km = distance;
-                return distance <= maxRadius && distance <= (vet.service_radius_km || maxRadius);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                vet.distance_km = R * c;
+                return vet;
             });
-            
+
             // Sort by distance
-            vets.sort((a, b) => a.distance_km - b.distance_km);
+            vets.sort((a, b) => (a.distance_km || 0) - (b.distance_km || 0));
         }
 
         res.json(vets);

@@ -132,3 +132,105 @@ exports.updateOrderStatus = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+exports.getOrderById = async (req, res) => {
+    try {
+        const db = await getDb();
+        const orderId = req.params.id;
+        const order = await db.get('SELECT * FROM orders WHERE id = ?', [orderId]);
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        // Verify owner if farmer
+        if (req.user.role === 'farmer' && order.farmer_id !== req.user.id) {
+             return res.status(403).json({ error: 'Unauthorized to view this order' });
+        }
+        // Enrich with items, vet, supplier
+        order.items = await db.all(`
+            SELECT oi.*, b.name as bull_name
+            FROM order_items oi
+            JOIN bulls b ON oi.bull_id = b.id
+            WHERE oi.order_id = ?
+        `, [order.id]);
+        if (order.vet_id) {
+            order.vet = await db.get('SELECT full_name, phone_number, county FROM vets WHERE id = ?', [order.vet_id]);
+        }
+        if (order.agri_supplier_id) {
+            order.supplier = await db.get('SELECT business_name, phone_number, address FROM agri_suppliers WHERE id = ?', [order.agri_supplier_id]);
+        }
+        res.json(order);
+    } catch (error) {
+        console.error('Error fetching single order:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+exports.payOrder = async (req, res) => {
+    try {
+        const db = await getDb();
+        const orderId = req.params.id;
+        
+        const order = await db.get('SELECT * FROM orders WHERE id = ?', [orderId]);
+        if (!order) return res.status(404).json({ error: 'Order not found' });
+        
+        if (order.farmer_id !== req.user.id) return res.status(403).json({ error: 'Unauthorized' });
+
+        await db.run('UPDATE orders SET payment_status = ?, order_status = ? WHERE id = ?', ['completed', 'processing', orderId]);
+        
+        res.json({ message: 'Payment successful' });
+    } catch (error) {
+        console.error('Error paying order:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+exports.getMyOrders = async (req, res) => {
+    try {
+        const db = await getDb();
+        const { role, id } = req.user;
+
+        let orders;
+        if (role === 'vet') {
+            // Vet sees orders where their vet profile id matches
+            const vetProfile = await db.get('SELECT id FROM vets WHERE user_id = ?', [id]);
+            if (!vetProfile) return res.json([]);
+            orders = await db.all('SELECT * FROM orders WHERE vet_id = ? ORDER BY created_at DESC', [vetProfile.id]);
+        } else if (role === 'agri-supplier') {
+            const supplierProfile = await db.get('SELECT id FROM agri_suppliers WHERE user_id = ?', [id]);
+            if (!supplierProfile) return res.json([]);
+            orders = await db.all('SELECT * FROM orders WHERE agri_supplier_id = ? ORDER BY created_at DESC', [supplierProfile.id]);
+        } else if (role === 'farmer') {
+            orders = await db.all('SELECT * FROM orders WHERE farmer_id = ? ORDER BY created_at DESC', [id]);
+        } else {
+            orders = await db.all('SELECT * FROM orders ORDER BY created_at DESC');
+        }
+
+        // Attach items + vet/supplier names
+        for (let order of orders) {
+            order.items = await db.all(`
+                SELECT oi.*, b.name as bull_name
+                FROM order_items oi
+                JOIN bulls b ON oi.bull_id = b.id
+                WHERE oi.order_id = ?
+            `, [order.id]);
+
+            if (order.vet_id) {
+                const vet = await db.get('SELECT full_name, phone_number, county FROM vets WHERE id = ?', [order.vet_id]);
+                order.vet = vet;
+            }
+            if (order.agri_supplier_id) {
+                const supplier = await db.get('SELECT business_name, phone_number, address FROM agri_suppliers WHERE id = ?', [order.agri_supplier_id]);
+                order.supplier = supplier;
+            }
+            if (order.farmer_id) {
+                const farmer = await db.get('SELECT username FROM users WHERE id = ?', [order.farmer_id]);
+                order.farmer = farmer;
+            }
+        }
+
+        res.json(orders);
+    } catch (error) {
+        console.error('Error fetching my orders:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};

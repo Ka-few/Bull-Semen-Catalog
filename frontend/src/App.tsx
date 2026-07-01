@@ -10,6 +10,7 @@ import Catalog from './pages/Catalog';
 import VetSearch from './pages/VetSearch';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import Payment from './pages/Payment';
 import AdminDash from './pages/AdminDash';
 import VetDash from './pages/VetDash';
 import SupplierDash from './pages/SupplierDash';
@@ -32,6 +33,7 @@ function App() {
               <Route path="/vets" element={<VetSearch />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/payment/:orderId" element={<Payment />} />
             </Route>
 
             {/* Admin Routes */}
