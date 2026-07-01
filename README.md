@@ -1,39 +1,54 @@
-# Bull-Semen-Catalog
-#### A digital Bull semen catalog built using HTML/CSS/JS and JSON server for backend.
-#### by Francis Njoroge.
-## Description.
-This is a digital semen catalog for bulls. It enables a farmer to browse for a specific bull semen for artificial insemination(AI). The catalog contains bull cards that hold details for a speific bull name, image, desired traits, milk production from lineage, DOB, breed and the breeer. This MVP is tailored for a agri-input supplier to add new bull entry, delete a bull entry based on the availability and for a farmer to browse through the catalog.
+# Bull Semen Catalog & AI Logistics Platform
 
-Notice for Image attribution.
-The images used in this application are for educational purposes only. I do not own the images and I have used the images without explicit rights from the owners.
+A comprehensive digital platform connecting dairy farmers with top-tier genetics, certified veterinary professionals, and agricultural semen suppliers.
 
+## Description
+This application allows farmers to browse a catalog of high-quality bull semen, place orders, and coordinate artificial insemination (AI) services. It handles the entire logistics pipeline:
+1. **Farmers** can browse semen based on traits, yield data, and lineage, then place orders which require selecting a nearby certified vet and a local semen supplier.
+2. **Vets** have a dedicated dashboard to manage their profiles, set their service radius and fees, and track the status of AI orders assigned to them (from allocation, to fetching the semen, to completing the insemination).
+3. **Agri-Suppliers** manage their own localized inventory of semen, allowing them to stock specific bulls and manage quantities.
+4. **Admins** maintain the global catalog of bulls.
 
+## Key Features
+- **Role-Based Access Control (RBAC):** Distinct dashboards and capabilities for Farmers, Vets, Agri-Suppliers, and Admins.
+- **Geospatial Logistics:** Integrates Leaflet maps to allow farmers to visually pinpoint delivery locations, and matches them with nearby vets and suppliers based on coordinates and distance algorithms.
+- **Inventory Management:** Suppliers maintain their own localized stock, which updates dynamically.
+- **Order Tracking:** Full end-to-end status tracking (`pending`, `allocated`, `fetched_by_vet`, `completed`).
 
+## Technologies Used
+- **Frontend:** React, TypeScript, Vite, TailwindCSS, Lucide React, Leaflet (React-Leaflet)
+- **Backend:** Node.js, Express.js
+- **Database:** SQLite3
 
-## Instructions for use
-Login credentials
-username admin
-password adminpass
-username farmer
-password farmerpass
-Open this link to run.
-### View live site
-Visit the deployed aplication at: [link here] (https://ka-few.github.io/Bull-Semen-Catalog/)
+## Instructions for Local Development
 
-The live site allows you to:
-Browse through the catalog to see the available Bull entries
-Add a new Bull entry
-Delete a Bull entry
+### Prerequisites
+- Node.js installed on your machine.
 
-## Technologies used 
-HTML
-CSS
-JS
-JSON server
+### Setup and Running
+You will need to run both the frontend and backend servers simultaneously.
 
-## Related repositories
-Repository: [link here] (https://github.com/Ka-few/Bull-Semen-Catalog)
-Deployed API: [live API URL] (https://bull-semen-catalog-2.onrender.com/bulls)
+**1. Backend Setup:**
+```bash
+cd backend
+npm install
+npm run dev
+```
+The backend server will start on `http://localhost:5000`. The SQLite database will automatically initialize.
 
-## Licence 
-MIT license
+**2. Frontend Setup:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+The frontend Vite server will start on `http://localhost:5173`.
+
+### Login Credentials
+For testing purposes, the following default credentials can be used:
+- **Admin:** Username: `admin` | Password: `admin123`
+
+You can register new accounts for Farmers, Vets, and Agri-Suppliers directly through the `/register` page.
+
+## License
+MIT License

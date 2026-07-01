@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -20,7 +20,7 @@ function App() {
     <Router>
       <div style={{ minHeight: '100vh', backgroundColor: '#f3f4f6' }}>
         <Navbar />
-        <main className="container" style={{ padding: '2rem 0' }}>
+        <main className="container mx-auto px-4" style={{ padding: '2rem 0' }}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
