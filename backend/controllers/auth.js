@@ -11,7 +11,7 @@ exports.register = async (req, res) => {
         // Convert role to lower case to match DB constraints
         role = role ? role.toLowerCase() : 'farmer';
 
-        if (!['farmer', 'vet', 'admin'].includes(role)) {
+        if (!['farmer', 'vet', 'admin', 'agri-supplier'].includes(role)) {
             return res.status(400).json({ error: 'Invalid role' });
         }
 

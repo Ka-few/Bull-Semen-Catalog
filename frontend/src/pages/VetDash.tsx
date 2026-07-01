@@ -13,6 +13,8 @@ const VetDash = () => {
   const [phone, setPhone] = useState('');
   const [county, setCounty] = useState('');
   const [subCounty, setSubCounty] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
   const [fee, setFee] = useState('');
 
   const fetchOrdersAndProfile = async () => {
@@ -41,7 +43,8 @@ const VetDash = () => {
     e.preventDefault();
     try {
       await api.post('/vets/register', {
-        full_name: fullName, phone_number: phone, county, sub_county: subCounty, service_fee: parseFloat(fee)
+        full_name: fullName, phone_number: phone, county, sub_county: subCounty, 
+        latitude: parseFloat(latitude), longitude: parseFloat(longitude), service_fee: parseFloat(fee)
       });
       alert("Profile created! Awaiting admin verification.");
       fetchOrdersAndProfile();
@@ -71,10 +74,14 @@ const VetDash = () => {
           <form onSubmit={handleRegisterProfile} style={{ display: 'grid', gap: '1rem', maxWidth: '400px' }}>
             <input type="text" placeholder="Full Name" value={fullName} onChange={e => setFullName(e.target.value)} required style={{ padding: '0.75rem' }} />
             <input type="text" placeholder="Phone Number" value={phone} onChange={e => setPhone(e.target.value)} required style={{ padding: '0.75rem' }} />
-            <input type="text" placeholder="County" value={county} onChange={e => setCounty(e.target.value)} required style={{ padding: '0.75rem' }} />
-            <input type="text" placeholder="Sub-county" value={subCounty} onChange={e => setSubCounty(e.target.value)} required style={{ padding: '0.75rem' }} />
-            <input type="number" placeholder="Service Fee (KES)" value={fee} onChange={e => setFee(e.target.value)} required style={{ padding: '0.75rem' }} />
-            <button type="submit" style={{ padding: '0.75rem', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Submit Profile for Verification</button>
+            <input type="text" placeholder="County" value={county} onChange={e => setCounty(e.target.value)} required className="p-3 border rounded w-full" />
+            <input type="text" placeholder="Sub-county" value={subCounty} onChange={e => setSubCounty(e.target.value)} required className="p-3 border rounded w-full" />
+            <div className="grid grid-cols-2 gap-4">
+              <input type="number" step="any" placeholder="Latitude" value={latitude} onChange={e => setLatitude(e.target.value)} required className="p-3 border rounded w-full" />
+              <input type="number" step="any" placeholder="Longitude" value={longitude} onChange={e => setLongitude(e.target.value)} required className="p-3 border rounded w-full" />
+            </div>
+            <input type="number" placeholder="Service Fee (KES)" value={fee} onChange={e => setFee(e.target.value)} required className="p-3 border rounded w-full" />
+            <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition">Submit Profile for Verification</button>
           </form>
         </div>
       ) : (
@@ -110,13 +117,23 @@ const VetDash = () => {
                     </div>
                     <div style={{ color: '#4b5563', fontSize: '0.875rem', marginBottom: '1rem' }}>
                       Items: {order.items.map((i: any) => `${i.quantity}x ${i.bull_name}`).join(', ')}
+                      <br />
+                      Pickup Supplier ID: {order.agri_supplier_id || 'N/A'}
                     </div>
-                    {order.order_status !== 'completed' && (
+                    {order.order_status === 'allocated' && (
+                      <button
+                        onClick={() => handleUpdateOrderStatus(order.id, 'fetched_by_vet')}
+                        style={{ padding: '0.5rem 1rem', backgroundColor: '#8b5cf6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '0.5rem' }}
+                      >
+                        Mark as Fetched from Supplier
+                      </button>
+                    )}
+                    {order.order_status === 'fetched_by_vet' && (
                       <button
                         onClick={() => handleUpdateOrderStatus(order.id, 'completed')}
                         style={{ padding: '0.5rem 1rem', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                       >
-                        Mark as Completed
+                        Mark as Completed (Delivered)
                       </button>
                     )}
                   </div>

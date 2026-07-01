@@ -19,8 +19,37 @@ async function initializeDb() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
-      role TEXT CHECK(role IN ('farmer', 'vet', 'admin')) NOT NULL,
+      role TEXT CHECK(role IN ('farmer', 'vet', 'admin', 'agri-supplier')) NOT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+    // Create Farmers table
+    await db.exec(`
+    CREATE TABLE IF NOT EXISTS farmers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      full_name TEXT NOT NULL,
+      phone_number TEXT NOT NULL,
+      latitude REAL,
+      longitude REAL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+  `);
+
+    // Create Agri-Suppliers table
+    await db.exec(`
+    CREATE TABLE IF NOT EXISTS agri_suppliers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      business_name TEXT NOT NULL,
+      phone_number TEXT NOT NULL,
+      address TEXT NOT NULL,
+      latitude REAL,
+      longitude REAL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
     );
   `);
 
@@ -88,12 +117,16 @@ async function initializeDb() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       farmer_id INTEGER NOT NULL,
       vet_id INTEGER,
+      agri_supplier_id INTEGER,
+      delivery_lat REAL,
+      delivery_lng REAL,
       total_amount REAL NOT NULL,
       payment_status TEXT CHECK(payment_status IN ('pending', 'completed', 'failed')) DEFAULT 'pending',
-      order_status TEXT CHECK(order_status IN ('pending', 'processing', 'completed', 'cancelled')) DEFAULT 'pending',
+      order_status TEXT CHECK(order_status IN ('pending', 'processing', 'allocated', 'fetched_by_vet', 'completed', 'cancelled')) DEFAULT 'pending',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY(farmer_id) REFERENCES users(id) ON DELETE CASCADE,
-      FOREIGN KEY(vet_id) REFERENCES vets(id) ON DELETE SET NULL
+      FOREIGN KEY(vet_id) REFERENCES vets(id) ON DELETE SET NULL,
+      FOREIGN KEY(agri_supplier_id) REFERENCES agri_suppliers(id) ON DELETE SET NULL
     );
   `);
 

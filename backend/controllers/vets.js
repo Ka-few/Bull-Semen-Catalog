@@ -41,7 +41,7 @@ exports.registerVet = async (req, res) => {
 exports.getVets = async (req, res) => {
     try {
         const db = await getDb();
-        const { county, verified } = req.query;
+        const { county, verified, lat, lng, radius_km } = req.query;
 
         let query = 'SELECT * FROM vets WHERE 1=1';
         let params = [];
@@ -52,13 +52,40 @@ exports.getVets = async (req, res) => {
         }
 
         if (verified !== undefined) {
-            // 1 for true, 0 for false in SQLite
             query += ' AND verified = ?';
             const isVerified = verified === 'true' || verified === '1' ? 1 : 0;
             params.push(isVerified);
         }
 
-        const vets = await db.all(query, params);
+        let vets = await db.all(query, params);
+
+        // Perform geospatial filtering if lat and lng are provided
+        if (lat && lng) {
+            const originLat = parseFloat(lat);
+            const originLng = parseFloat(lng);
+            const maxRadius = radius_km ? parseFloat(radius_km) : 50; // default 50km
+
+            vets = vets.filter(vet => {
+                if (vet.latitude == null || vet.longitude == null) return false;
+                
+                // Haversine formula
+                const R = 6371; // Radius of the earth in km
+                const dLat = (vet.latitude - originLat) * Math.PI / 180;
+                const dLon = (vet.longitude - originLng) * Math.PI / 180;
+                const a = 
+                    Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(originLat * Math.PI / 180) * Math.cos(vet.latitude * Math.PI / 180) * 
+                    Math.sin(dLon/2) * Math.sin(dLon/2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                const distance = R * c;
+                
+                vet.distance_km = distance;
+                return distance <= maxRadius && distance <= (vet.service_radius_km || maxRadius);
+            });
+            
+            // Sort by distance
+            vets.sort((a, b) => a.distance_km - b.distance_km);
+        }
 
         res.json(vets);
     } catch (error) {

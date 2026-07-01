@@ -2,37 +2,45 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/config';
 import { CartContext } from '../context/CartContext';
+import { LocationPicker } from '../components/LocationPicker';
+import { GeospatialView } from '../components/GeospatialView';
+import { MapPin } from 'lucide-react';
 
-interface Vet {
-    id: number;
-    full_name: string;
-    county: string;
-    service_fee: number;
-}
-
-const Checkout = () => {
+export default function Checkout() {
     const { cartItems, fetchCart } = useContext(CartContext);
-    const [vets, setVets] = useState<Vet[]>([]);
-    const [selectedVet, setSelectedVet] = useState<string>('');
+    const [step, setStep] = useState<number>(1);
+    
+    const [farmerLocation, setFarmerLocation] = useState<{lat: number, lng: number} | null>(null);
+    
+    const [vets, setVets] = useState<any[]>([]);
+    const [agriSuppliers, setAgriSuppliers] = useState<any[]>([]);
+    
+    const [selectedVet, setSelectedVet] = useState<number | null>(null);
+    const [selectedSupplier, setSelectedSupplier] = useState<number | null>(null);
+    
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const totalSemenCost = cartItems.reduce((sum, item) => sum + (item.quantity * item.semen_price), 0);
-    const selectedVetDetails = vets.find(v => v.id.toString() === selectedVet);
+    const selectedVetDetails = vets.find(v => v.id === selectedVet);
     const vetFee = selectedVetDetails ? selectedVetDetails.service_fee : 0;
     const finalTotal = totalSemenCost + vetFee;
 
-    useEffect(() => {
-        const fetchVerifiedVets = async () => {
-            try {
-                const response = await api.get('/vets?verified=true');
-                setVets(response.data);
-            } catch (err) {
-                console.error('Failed to fetch vets', err);
-            }
-        };
-        fetchVerifiedVets();
-    }, []);
+    const handleLocationSelect = async (lat: number, lng: number) => {
+        setFarmerLocation({ lat, lng });
+        try {
+            const [vetsRes, suppliersRes] = await Promise.all([
+                api.get(`/vets?lat=${lat}&lng=${lng}&verified=true`),
+                api.get(`/agri-suppliers?lat=${lat}&lng=${lng}`)
+            ]);
+            setVets(vetsRes.data);
+            setAgriSuppliers(suppliersRes.data);
+            setStep(2); // Move to selection step
+        } catch (err) {
+            console.error('Failed to fetch nearby providers', err);
+            alert("Could not load nearby providers.");
+        }
+    };
 
     const handlePlaceOrder = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,13 +49,26 @@ const Checkout = () => {
             return;
         }
 
+        if (!farmerLocation) {
+            alert("Please select a delivery location.");
+            return;
+        }
+
+        if (!selectedSupplier) {
+            alert("Please select a supplier for semen pickup.");
+            return;
+        }
+
         setLoading(true);
         try {
             await api.post('/orders', {
-                vet_id: selectedVet ? parseInt(selectedVet, 10) : null
+                vet_id: selectedVet,
+                agri_supplier_id: selectedSupplier,
+                delivery_lat: farmerLocation.lat,
+                delivery_lng: farmerLocation.lng
             });
-            alert('Order placed successfully!');
-            fetchCart(); // Clear cart in context
+            alert('Order placed successfully! It has been allocated.');
+            fetchCart(); // Clear cart
             navigate('/');
         } catch (err) {
             alert("Failed to place order.");
@@ -58,83 +79,109 @@ const Checkout = () => {
     };
 
     if (cartItems.length === 0) {
-        return <div style={{ padding: '4rem 2rem', textAlign: 'center' }}><h2>Cart is empty. Nothing to checkout.</h2></div>;
+        return <div className="py-16 text-center"><h2 className="text-2xl font-bold">Cart is empty. Nothing to checkout.</h2></div>;
     }
 
     return (
-        <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1.5rem', color: '#1f2937' }}>Checkout</h2>
+        <div className="p-8 max-w-6xl mx-auto space-y-8">
+            <h2 className="text-3xl font-bold text-gray-800">Checkout Flow</h2>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-                <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem', color: '#1f2937' }}>1. Select AI Technician (Optional)</h3>
-                    <p style={{ color: '#4b5563', marginBottom: '1rem', fontSize: '0.875rem' }}>If you need a professional to perform the AI, select a verified vet from the list below.</p>
-
-                    <select
-                        value={selectedVet}
-                        onChange={(e) => setSelectedVet(e.target.value)}
-                        style={{ width: '100%', padding: '0.75rem', borderRadius: '4px', border: '1px solid #d1d5db', marginBottom: '1rem' }}
-                    >
-                        <option value="">No Vet - I will handle it myself</option>
-                        {vets.map(vet => (
-                            <option key={vet.id} value={vet.id}>
-                                {vet.full_name} ({vet.county}) - Fee: KES {vet.service_fee}
-                            </option>
-                        ))}
-                    </select>
-
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem', marginTop: '2rem', color: '#1f2937' }}>2. Payment Method</h3>
-                    <div style={{ padding: '1rem', border: '1px solid #d1d5db', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <input type="radio" id="mpesa" name="payment" defaultChecked />
-                        <label htmlFor="mpesa" style={{ fontWeight: '500' }}>M-Pesa (Pay on Delivery / Collection)</label>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Main Process Area */}
+                <div className="lg:col-span-2 space-y-8">
+                    
+                    {/* Step 1: Location */}
+                    <div className={`bg-white p-6 rounded-xl shadow border ${step === 1 ? 'border-blue-500' : 'border-gray-200'}`}>
+                        <h3 className="text-xl font-semibold mb-4 flex items-center">
+                            <span className={`w-8 h-8 rounded-full flex items-center justify-center text-white mr-3 ${step === 1 ? 'bg-blue-600' : 'bg-gray-400'}`}>1</span>
+                            Set Delivery Location
+                        </h3>
+                        {step === 1 ? (
+                            <div className="animate-fade-in">
+                                <p className="text-gray-600 mb-4">Click on the map to set where the animals are located for service.</p>
+                                <LocationPicker onLocationSelect={handleLocationSelect} />
+                            </div>
+                        ) : (
+                            <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+                                <div className="flex items-center text-green-700 font-medium">
+                                    <MapPin className="mr-2" /> Location Set ({farmerLocation?.lat.toFixed(4)}, {farmerLocation?.lng.toFixed(4)})
+                                </div>
+                                <button onClick={() => setStep(1)} className="text-blue-600 hover:underline text-sm">Change Location</button>
+                            </div>
+                        )}
                     </div>
+
+                    {/* Step 2: Provider Selection */}
+                    {step >= 2 && (
+                        <div className={`bg-white p-6 rounded-xl shadow border ${step === 2 ? 'border-blue-500' : 'border-gray-200'} animate-fade-in`}>
+                            <h3 className="text-xl font-semibold mb-4 flex items-center">
+                                <span className="w-8 h-8 rounded-full flex items-center justify-center text-white mr-3 bg-blue-600">2</span>
+                                Select Vet and Supplier
+                            </h3>
+                            <p className="text-gray-600 mb-4">Choose a nearby Vet for the service, and a Supplier from where they will pick up the semen.</p>
+                            
+                            <GeospatialView 
+                                farmerLocation={farmerLocation!}
+                                vets={vets}
+                                agriSuppliers={agriSuppliers}
+                                selectedVetId={selectedVet}
+                                selectedSupplierId={selectedSupplier}
+                                onSelectVet={setSelectedVet}
+                                onSelectSupplier={setSelectedSupplier}
+                            />
+                        </div>
+                    )}
                 </div>
 
-                <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', alignSelf: 'start' }}>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem', color: '#1f2937' }}>Order Summary</h3>
+                {/* Order Summary Sidebar */}
+                <div className="bg-white p-6 rounded-xl shadow border border-gray-200 h-fit sticky top-8">
+                    <h3 className="text-xl font-semibold mb-6 text-gray-800">Order Summary</h3>
 
-                    <div style={{ marginBottom: '1rem' }}>
+                    <div className="space-y-3 mb-6">
                         {cartItems.map(item => (
-                            <div key={item.cart_id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: '#4b5563' }}>
+                            <div key={item.cart_id} className="flex justify-between text-gray-600 text-sm">
                                 <span>{item.quantity}x {item.name}</span>
                                 <span>KES {item.quantity * item.semen_price}</span>
                             </div>
                         ))}
                     </div>
 
-                    <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1rem', marginBottom: '1rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: '#4b5563' }}>
+                    <div className="border-t pt-4 mb-4 space-y-2">
+                        <div className="flex justify-between text-gray-600">
                             <span>Semen Subtotal:</span>
                             <span>KES {totalSemenCost}</span>
                         </div>
                         {selectedVetDetails && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: '#4b5563' }}>
-                                <span>Vet Service Fee:</span>
+                            <div className="flex justify-between text-blue-600 font-medium">
+                                <span>Vet Service Fee ({selectedVetDetails.full_name}):</span>
                                 <span>KES {vetFee}</span>
                             </div>
                         )}
                     </div>
 
-                    <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                        <span style={{ fontSize: '1.125rem', fontWeight: 'bold', color: '#1f2937' }}>Total:</span>
-                        <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#10b981' }}>KES {finalTotal}</span>
+                    <div className="border-t pt-4 flex justify-between items-center mb-6">
+                        <span className="text-lg font-bold text-gray-800">Total:</span>
+                        <span className="text-2xl font-bold text-green-600">KES {finalTotal}</span>
                     </div>
 
                     <button
                         onClick={handlePlaceOrder}
-                        disabled={loading}
-                        style={{
-                            width: '100%', padding: '1rem', backgroundColor: '#3b82f6', color: 'white',
-                            border: 'none', borderRadius: '4px', cursor: loading ? 'not-allowed' : 'pointer',
-                            fontWeight: 'bold', fontSize: '1.1rem', opacity: loading ? 0.7 : 1
-                        }}
+                        disabled={loading || !farmerLocation || !selectedSupplier}
+                        className={`w-full p-4 rounded-lg font-bold text-lg transition ${
+                            loading || !farmerLocation || !selectedSupplier 
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                            : 'bg-green-600 hover:bg-green-700 text-white shadow-lg'
+                        }`}
                     >
-                        {loading ? 'Processing...' : 'Confirm Order'}
+                        {loading ? 'Processing...' : 'Confirm Allocation'}
                     </button>
+                    {(!farmerLocation || !selectedSupplier) && (
+                        <p className="text-xs text-red-500 text-center mt-2">
+                            Please set your location and select a supplier.
+                        </p>
+                    )}
                 </div>
             </div>
         </div>
     );
-};
-
-export default Checkout;
+}

@@ -4,7 +4,7 @@ exports.createOrder = async (req, res) => {
     try {
         const db = await getDb();
         const farmer_id = req.user.id;
-        const { vet_id } = req.body;
+        const { vet_id, agri_supplier_id, delivery_lat, delivery_lng } = req.body;
 
         if (req.user.role !== 'farmer') {
             return res.status(403).json({ error: 'Only farmers can create orders' });
@@ -29,10 +29,15 @@ exports.createOrder = async (req, res) => {
         }
 
         // Create Order
+        let initial_status = 'pending';
+        if (vet_id) {
+            initial_status = 'allocated';
+        }
+        
         const orderResult = await db.run(`
-      INSERT INTO orders (farmer_id, vet_id, total_amount) 
-      VALUES (?, ?, ?)
-    `, [farmer_id, vet_id || null, total_amount]);
+      INSERT INTO orders (farmer_id, vet_id, agri_supplier_id, delivery_lat, delivery_lng, total_amount, order_status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `, [farmer_id, vet_id || null, agri_supplier_id || null, delivery_lat, delivery_lng, total_amount, initial_status]);
 
         const order_id = orderResult.lastID;
 
@@ -64,12 +69,14 @@ exports.getOrders = async (req, res) => {
             return res.status(403).json({ error: 'Unauthorized to view these orders' });
         }
 
-        // Admin gets all, farmer gets theirs, vet gets assigned to them? Let's just do Farmer for now.
+        // Admin gets all, farmer gets theirs, vet gets assigned to them, agri-supplier gets assigned to them
         let orders;
         if (role === 'farmer') {
             orders = await db.all('SELECT * FROM orders WHERE farmer_id = ?', [farmer_id]);
         } else if (role === 'vet') {
             orders = await db.all('SELECT * FROM orders WHERE vet_id = ?', [req.user.id]);
+        } else if (role === 'agri-supplier') {
+            orders = await db.all('SELECT * FROM orders WHERE agri_supplier_id = ?', [req.user.id]);
         } else {
             orders = await db.all('SELECT * FROM orders');
         }

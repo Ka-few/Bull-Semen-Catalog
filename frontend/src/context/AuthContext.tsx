@@ -4,7 +4,7 @@ import api from '../api/config';
 interface User {
     id: number;
     username: string;
-    role: 'farmer' | 'vet' | 'admin';
+    role: 'farmer' | 'vet' | 'admin' | 'agri-supplier';
 }
 
 interface AuthContextType {

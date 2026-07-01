@@ -12,6 +12,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import AdminDash from './pages/AdminDash';
 import VetDash from './pages/VetDash';
+import SupplierDash from './pages/SupplierDash';
 
 function App() {
   return (
@@ -41,6 +42,11 @@ function App() {
             {/* Vet Routes */}
             <Route element={<ProtectedRoute allowedRoles={['vet']} />}>
               <Route path="/vet" element={<VetDash />} />
+            </Route>
+
+            {/* Supplier Routes */}
+            <Route element={<ProtectedRoute allowedRoles={['agri-supplier']} />}>
+              <Route path="/supplier" element={<SupplierDash />} />
             </Route>
           </Routes>
         </main>
