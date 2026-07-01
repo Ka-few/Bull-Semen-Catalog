@@ -143,6 +143,20 @@ async function initializeDb() {
     );
   `);
 
+    // Create Agri-Supplier Inventory table
+    await db.exec(`
+    CREATE TABLE IF NOT EXISTS agri_supplier_inventory (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      agri_supplier_id INTEGER NOT NULL,
+      bull_id INTEGER NOT NULL,
+      quantity INTEGER NOT NULL DEFAULT 0,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(agri_supplier_id) REFERENCES agri_suppliers(id) ON DELETE CASCADE,
+      FOREIGN KEY(bull_id) REFERENCES bulls(id) ON DELETE CASCADE,
+      UNIQUE(agri_supplier_id, bull_id)
+    );
+  `);
+
     return db;
 }
 

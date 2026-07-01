@@ -80,3 +80,70 @@ exports.updateProfile = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+// Get current agri-supplier inventory
+exports.getInventory = async (req, res) => {
+    try {
+        const db = await getDb();
+        const supplier = await db.get('SELECT id FROM agri_suppliers WHERE user_id = ?', [req.user.id]);
+        if (!supplier) {
+            return res.status(404).json({ error: 'Supplier profile not found' });
+        }
+
+        const inventory = await db.all(`
+            SELECT i.id, i.quantity, i.bull_id, b.name as bull_name, b.breed, b.semen_price
+            FROM agri_supplier_inventory i
+            JOIN bulls b ON i.bull_id = b.id
+            WHERE i.agri_supplier_id = ?
+        `, [supplier.id]);
+
+        res.json(inventory);
+    } catch (error) {
+        console.error('Error fetching inventory:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// Add or update inventory quantity
+exports.updateInventory = async (req, res) => {
+    try {
+        const { bull_id, quantity } = req.body;
+        const db = await getDb();
+        const supplier = await db.get('SELECT id FROM agri_suppliers WHERE user_id = ?', [req.user.id]);
+        if (!supplier) {
+            return res.status(404).json({ error: 'Supplier profile not found' });
+        }
+
+        const parsedQuantity = parseInt(quantity, 10);
+
+        await db.run(`
+            INSERT INTO agri_supplier_inventory (agri_supplier_id, bull_id, quantity)
+            VALUES (?, ?, ?)
+            ON CONFLICT(agri_supplier_id, bull_id)
+            DO UPDATE SET quantity = excluded.quantity
+        `, [supplier.id, bull_id, parsedQuantity]);
+
+        res.json({ message: 'Inventory updated successfully' });
+    } catch (error) {
+        console.error('Error updating inventory:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// Delete from inventory
+exports.deleteInventory = async (req, res) => {
+    try {
+        const db = await getDb();
+        const bullId = req.params.bullId;
+        const supplier = await db.get('SELECT id FROM agri_suppliers WHERE user_id = ?', [req.user.id]);
+        if (!supplier) {
+            return res.status(404).json({ error: 'Supplier profile not found' });
+        }
+
+        await db.run('DELETE FROM agri_supplier_inventory WHERE agri_supplier_id = ? AND bull_id = ?', [supplier.id, bullId]);
+        res.json({ message: 'Removed from inventory' });
+    } catch (error) {
+        console.error('Error deleting inventory item:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};

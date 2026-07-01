@@ -42,6 +42,7 @@ const Navbar = () => {
                 {user?.role === 'farmer' && <Link to="/vets" style={linkStyles}>Find Vet</Link>}
                 {user?.role === 'admin' && <Link to="/admin" style={linkStyles}>Admin Dash</Link>}
                 {user?.role === 'vet' && <Link to="/vet" style={linkStyles}>Vet Dash</Link>}
+                {user?.role === 'agri-supplier' && <Link to="/supplier" style={linkStyles}>Supplier Dash</Link>}
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>

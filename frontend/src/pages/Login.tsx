@@ -19,6 +19,7 @@ const Login = () => {
             // Redirect based on role
             if (response.data.user.role === 'admin') navigate('/admin');
             else if (response.data.user.role === 'vet') navigate('/vet');
+            else if (response.data.user.role === 'agri-supplier') navigate('/supplier');
             else navigate('/');
         } catch (err: any) {
             setError(err.response?.data?.error || 'Login failed. Please try again.');
