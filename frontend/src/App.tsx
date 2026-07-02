@@ -21,10 +21,10 @@ function App() {
     <>
       <Toaster position="top-right" toastOptions={{ duration: 4000, style: { background: '#333', color: '#fff' } }} />
       <Router>
-      <div style={{ minHeight: '100vh', backgroundColor: '#f3f4f6' }}>
-        <Navbar />
-        <main className="container mx-auto px-4" style={{ padding: '2rem 0' }}>
-          <Routes>
+        <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-blue-200 selection:text-blue-900 flex flex-col">
+          <Navbar />
+          <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
