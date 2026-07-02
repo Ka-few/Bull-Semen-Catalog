@@ -97,7 +97,7 @@ const Catalog = () => {
           <button onClick={() => {setBreed(''); setMinMilkYield(''); setMaxPrice('');}} className="mt-4 text-blue-600 hover:underline font-bold">Clear filters</button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
           {bulls.map(bull => (
             <BullCard key={bull.id} bull={bull} />
           ))}
