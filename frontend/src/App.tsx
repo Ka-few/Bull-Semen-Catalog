@@ -1,4 +1,5 @@
 
+import { Toaster } from 'react-hot-toast';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -17,7 +18,9 @@ import SupplierDash from './pages/SupplierDash';
 
 function App() {
   return (
-    <Router>
+    <>
+      <Toaster position="top-right" toastOptions={{ duration: 4000, style: { background: '#333', color: '#fff' } }} />
+      <Router>
       <div style={{ minHeight: '100vh', backgroundColor: '#f3f4f6' }}>
         <Navbar />
         <main className="container mx-auto px-4" style={{ padding: '2rem 0' }}>
@@ -53,7 +56,8 @@ function App() {
           </Routes>
         </main>
       </div>
-    </Router>
+      </Router>
+    </>
   );
 }
 

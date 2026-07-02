@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
 import api from '../api/config';
 import { AuthContext } from '../context/AuthContext';
-import { Package, User, Database, Trash2, PlusCircle, Edit2 } from 'lucide-react';
+import { Package, User, Database, Trash2, PlusCircle, Edit2, Store } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function SupplierDash() {
     useContext(AuthContext);
@@ -75,11 +76,11 @@ export default function SupplierDash() {
             const method = profile ? 'put' : 'post';
             const res = await api[method]('/agri-suppliers/profile', data);
             setProfile(res.data);
-            alert('Profile updated successfully');
+            toast.success('Profile updated successfully');
             fetchData(); // Refresh everything in case they just created a profile
         } catch (err) {
             console.error('Failed to update profile', err);
-            alert('Failed to update profile');
+            toast.error('Failed to update profile');
         }
     };
 
@@ -94,9 +95,10 @@ export default function SupplierDash() {
             setShowAddForm(false);
             setSelectedBullId('');
             setAddQuantity('0');
+            toast.success('Inventory updated successfully');
             fetchData();
         } catch (err) {
-            alert('Failed to update inventory');
+            toast.error('Failed to update inventory');
             console.error(err);
         }
     };
@@ -105,9 +107,10 @@ export default function SupplierDash() {
         if (!window.confirm("Are you sure you want to remove this semen from your inventory?")) return;
         try {
             await api.delete(`/agri-suppliers/inventory/${bullId}`);
+            toast.success('Item removed from inventory');
             fetchData();
         } catch (err) {
-            alert('Failed to delete inventory');
+            toast.error('Failed to delete inventory');
             console.error(err);
         }
     };
@@ -121,11 +124,19 @@ export default function SupplierDash() {
     }
 
     return (
-        <div className="max-w-6xl mx-auto space-y-8 py-8">
-            <h1 className="text-3xl font-bold text-gray-800">🏪 Agri-Supplier Dashboard</h1>
+        <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 animate-fade-in">
+            <div className="flex items-center gap-3 mb-8">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                    <Store className="h-8 w-8 text-orange-600" />
+                </div>
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-800">Agri-Supplier Dashboard</h1>
+                    <p className="text-gray-500">Manage your profile, inventory, and vet pickups</p>
+                </div>
+            </div>
 
             {!profile && (
-                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg shadow-sm">
                     <p className="text-yellow-800 font-medium">Please create your business profile below to start managing inventory and receiving orders.</p>
                 </div>
             )}
@@ -172,40 +183,45 @@ export default function SupplierDash() {
                     </div>
 
                     {/* Orders Section */}
-                    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-                        <h2 className="text-xl font-semibold mb-4 flex items-center">
-                            <Package className="mr-2 h-5 w-5 text-blue-600" />
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                        <h2 className="text-xl font-bold mb-5 flex items-center text-gray-800">
+                            <Package className="mr-2 h-6 w-6 text-blue-600" />
                             Pickups Assigned to You
                         </h2>
                         {orders.length === 0 ? (
-                            <p className="text-gray-500 text-sm">No pickups currently assigned.</p>
+                            <div className="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                <Package className="h-8 w-8 text-gray-300 mx-auto mb-2" />
+                                <p className="text-gray-500 text-sm font-medium">No pickups currently assigned.</p>
+                            </div>
                         ) : (
-                            <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+                            <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
                                 {orders.map(order => (
-                                    <div key={order.id} className="border p-4 rounded-lg bg-gray-50">
-                                        <div className="flex justify-between items-start mb-2">
-                                            <span className="font-bold text-gray-800">Order #{order.id}</span>
-                                            <span className={`px-2 py-1 rounded-full text-xs font-semibold capitalize ${
-                                                order.order_status === 'pending' ? 'bg-yellow-200 text-yellow-800' :
-                                                order.order_status === 'allocated' ? 'bg-blue-200 text-blue-800' :
-                                                order.order_status === 'fetched_by_vet' ? 'bg-purple-200 text-purple-800' :
-                                                'bg-green-200 text-green-800'
+                                    <div key={order.id} className="border border-gray-100 p-5 rounded-xl bg-gray-50/50 hover:bg-gray-50 transition">
+                                        <div className="flex justify-between items-start mb-3">
+                                            <span className="font-bold text-gray-800">Order #{String(order.id).padStart(4, '0')}</span>
+                                            <span className={`px-2.5 py-1 rounded-full text-xs font-bold capitalize ${
+                                                order.order_status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                                                order.order_status === 'allocated' ? 'bg-blue-100 text-blue-700' :
+                                                order.order_status === 'fetched_by_vet' ? 'bg-purple-100 text-purple-700' :
+                                                'bg-green-100 text-green-700'
                                             }`}>
-                                                {order.order_status}
+                                                {order.order_status.replace(/_/g, ' ')}
                                             </span>
                                         </div>
                                         {order.vet && (
-                                            <p className="text-sm text-gray-600">
-                                                <strong>Vet:</strong> {order.vet.full_name} ({order.vet.phone_number})
-                                            </p>
+                                            <div className="bg-white p-3 rounded-lg border border-gray-100 mb-3">
+                                                <p className="text-xs text-gray-400 font-bold uppercase mb-1 flex items-center gap-1"><User className="w-3 h-3"/> Assigned Vet</p>
+                                                <p className="text-sm text-gray-700 font-medium">{order.vet.full_name}</p>
+                                                <p className="text-xs text-gray-500 mt-0.5">📞 {order.vet.phone_number}</p>
+                                            </div>
                                         )}
-                                        <div className="mt-3">
-                                            <p className="text-xs font-semibold text-gray-500 uppercase">Items to prepare:</p>
-                                            <ul className="mt-1 space-y-1">
+                                        <div>
+                                            <p className="text-xs text-gray-400 font-bold uppercase mb-2 flex items-center gap-1"><Package className="w-3 h-3"/> Items to prepare</p>
+                                            <ul className="space-y-1.5">
                                                 {order.items?.map((item: any) => (
                                                     <li key={item.id} className="text-sm flex items-center text-gray-700">
-                                                        <span className="bg-gray-200 text-gray-800 text-xs font-bold px-2 py-0.5 rounded mr-2">{item.quantity}x</span> 
-                                                        {item.bull_name}
+                                                        <span className="bg-blue-50 text-blue-700 text-xs font-bold px-2 py-0.5 rounded mr-2">{item.quantity}x</span> 
+                                                        <span className="font-medium">{item.bull_name}</span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -220,17 +236,17 @@ export default function SupplierDash() {
                 {/* Inventory Section (Right Column) */}
                 <div className="lg:col-span-2 space-y-6">
                     {profile && (
-                        <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                             <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-xl font-semibold flex items-center text-gray-800">
-                                    <Database className="mr-2 h-5 w-5 text-indigo-600" />
+                                <h2 className="text-xl font-bold flex items-center text-gray-800">
+                                    <Database className="mr-2 h-6 w-6 text-indigo-600" />
                                     Semen Inventory Management
                                 </h2>
                                 <button 
                                     onClick={() => setShowAddForm(!showAddForm)}
-                                    className="flex items-center text-sm bg-indigo-50 text-indigo-700 px-3 py-2 rounded-lg font-medium hover:bg-indigo-100 transition"
+                                    className="flex items-center text-sm bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl font-bold hover:bg-indigo-100 transition"
                                 >
-                                    {showAddForm ? 'Cancel' : <><PlusCircle className="h-4 w-4 mr-1" /> Add Stock</>}
+                                    {showAddForm ? 'Cancel' : <><PlusCircle className="h-4 w-4 mr-1.5" /> Add Stock</>}
                                 </button>
                             </div>
 

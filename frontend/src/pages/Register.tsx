@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import api from '../api/config';
 
 const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, _setConfirmPassword] = useState('');
     const [role, setRole] = useState<'farmer' | 'vet' | 'agri-supplier'>('farmer');
-    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            if (password !== confirmPassword) {
+                toast.error("Passwords do not match!");
+                return;
+            }
             await api.post('/auth/register', { username, password, role });
-            alert('Registration successful! Please log in.');
+            toast.success('Registration successful! Please log in.');
             navigate('/login');
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Registration failed. Please try again.');
+            toast.error('Registration failed. Please try again.');
         }
     };
 
@@ -37,7 +42,6 @@ const Register = () => {
     return (
         <div style={containerStyle}>
             <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#1f2937' }}>Create an Account</h2>
-            {error && <div style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem', color: '#4b5563' }}>Username</label>

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/config';
 import { CheckCircle, CreditCard, MapPin, User, Package, Truck } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 
 export default function Payment() {
     const { orderId } = useParams();
@@ -20,7 +21,7 @@ export default function Payment() {
             if (res.data.payment_status === 'completed') setPaid(true);
         } catch (err) {
             console.error(err);
-            alert('Failed to load order.');
+            toast.error('Failed to load order.');
         } finally {
             setLoading(false);
         }
@@ -34,12 +35,17 @@ export default function Payment() {
         setProcessing(true);
         try {
             await new Promise(resolve => setTimeout(resolve, 1500));
-            await api.put(`/orders/${orderId}/pay`);
-            setPaid(true);
-            // Refresh order to get updated data
-            await fetchOrder();
+            const res = await api.put(`/orders/${orderId}/pay`);
+            if (res.data) {
+                setPaid(true);
+                toast.success("Payment successful!");
+                await fetchOrder();
+            } else {
+                toast.error("Payment failed. Please try again.");
+            }
         } catch (err) {
-            alert('Payment failed. Please try again.');
+            toast.error('Payment failed. Please try again.');
+            console.error(err);
         } finally {
             setProcessing(false);
         }

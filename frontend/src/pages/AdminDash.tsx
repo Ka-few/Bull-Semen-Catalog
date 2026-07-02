@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/config';
+import toast from 'react-hot-toast';
+import { ShieldAlert, Trash2, PlusCircle, CheckCircle, XCircle } from 'lucide-react';
 
 interface Bull {
   id: number;
@@ -44,9 +46,10 @@ const AdminDash = () => {
   const handleVerifyVet = async (id: number, verify: boolean) => {
     try {
       await api.put(`/vets/${id}/verify`, { verified: verify });
+      toast.success(verify ? "Vet verified successfully!" : "Vet verification revoked");
       fetchVets();
     } catch (err) {
-      alert("Failed to update vet verification status");
+      toast.error("Failed to update vet verification status");
     }
   };
 
@@ -54,9 +57,10 @@ const AdminDash = () => {
     if (confirm("Are you sure you want to delete this bull?")) {
       try {
         await api.delete(`/bulls/${id}`);
+        toast.success("Bull deleted successfully");
         fetchBulls();
       } catch (err) {
-        alert("Failed to delete bull");
+        toast.error("Failed to delete bull");
       }
     }
   };
@@ -77,41 +81,56 @@ const AdminDash = () => {
       setNewBullPrice('');
       setNewBullMilk('');
       setNewBullImage('');
-      alert("Bull created successfully");
+      toast.success("Bull created successfully");
     } catch (err) {
-      alert("Failed to create bull");
+      toast.error("Failed to create bull");
     }
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '2rem', color: '#1f2937' }}>System Administration</h2>
+    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 animate-fade-in">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="p-3 bg-gray-800 rounded-xl">
+          <ShieldAlert className="h-8 w-8 text-white" />
+        </div>
+        <div>
+          <h2 className="text-3xl font-bold text-gray-800">System Administration</h2>
+          <p className="text-gray-500">Manage catalog and verify service providers</p>
+        </div>
+      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
         {/* Bulls Management */}
-        <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem', color: '#1f2937', borderBottom: '1px solid #e5e7eb', paddingBottom: '0.5rem' }}>
+        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-[700px]">
+          <h3 className="text-xl font-bold mb-6 text-gray-800 border-b pb-4">
             Bull Catalog Management
           </h3>
 
-          <form onSubmit={handleCreateBull} style={{ marginBottom: '2rem', display: 'grid', gap: '0.5rem' }}>
-            <h4 style={{ fontWeight: '500' }}>Add Quick Bull</h4>
-            <input type="text" placeholder="Name" value={newBullName} onChange={e => setNewBullName(e.target.value)} required style={{ padding: '0.5rem' }} />
-            <input type="text" placeholder="Breed" value={newBullBreed} onChange={e => setNewBullBreed(e.target.value)} required style={{ padding: '0.5rem' }} />
-            <input type="number" placeholder="Price" value={newBullPrice} onChange={e => setNewBullPrice(e.target.value)} required style={{ padding: '0.5rem' }} />
-            <input type="number" placeholder="Milk Yield" value={newBullMilk} onChange={e => setNewBullMilk(e.target.value)} required style={{ padding: '0.5rem' }} />
-            <input type="text" placeholder="Image URL (optional)" value={newBullImage} onChange={e => setNewBullImage(e.target.value)} style={{ padding: '0.5rem' }} />
-            <button type="submit" style={{ padding: '0.5rem', backgroundColor: '#10b981', color: 'white', border: 'none', cursor: 'pointer' }}>Add Bull</button>
+          <form onSubmit={handleCreateBull} className="bg-gray-50 p-6 rounded-xl border border-gray-100 space-y-4 mb-8">
+            <h4 className="font-bold text-gray-700 flex items-center gap-2"><PlusCircle className="w-5 h-5"/> Add Quick Bull</h4>
+            <div className="grid grid-cols-2 gap-4">
+              <input type="text" placeholder="Name" value={newBullName} onChange={e => setNewBullName(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
+              <input type="text" placeholder="Breed" value={newBullBreed} onChange={e => setNewBullBreed(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
+              <input type="number" placeholder="Price (KES)" value={newBullPrice} onChange={e => setNewBullPrice(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
+              <input type="number" placeholder="Milk Yield (kg)" value={newBullMilk} onChange={e => setNewBullMilk(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
+              <input type="text" placeholder="Image URL (optional)" value={newBullImage} onChange={e => setNewBullImage(e.target.value)} className="col-span-2 p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
+            </div>
+            <button type="submit" className="w-full p-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-md">Add Bull to Catalog</button>
           </form>
 
-          <div>
-            <h4 style={{ fontWeight: '500', marginBottom: '0.5rem' }}>Existing Bulls</h4>
-            <ul style={{ listStyle: 'none', padding: 0 }}>
+          <div className="flex-1 overflow-hidden flex flex-col">
+            <h4 className="font-bold text-gray-700 mb-4">Existing Bulls</h4>
+            <ul className="overflow-y-auto space-y-3 pr-2 custom-scrollbar flex-1">
               {bulls.map(bull => (
-                <li key={bull.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', borderBottom: '1px solid #e5e7eb' }}>
-                  <span>{bull.name} ({bull.breed})</span>
-                  <button onClick={() => handleDeleteBull(bull.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
+                <li key={bull.id} className="flex justify-between items-center p-4 bg-white border border-gray-100 rounded-xl hover:shadow-md transition group">
+                  <div>
+                    <span className="font-bold text-gray-800 block">{bull.name}</span>
+                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">{bull.breed}</span>
+                  </div>
+                  <button onClick={() => handleDeleteBull(bull.id)} className="text-red-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition" title="Delete">
+                    <Trash2 className="w-5 h-5"/>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -119,28 +138,41 @@ const AdminDash = () => {
         </div>
 
         {/* Vet Management */}
-        <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem', color: '#1f2937', borderBottom: '1px solid #e5e7eb', paddingBottom: '0.5rem' }}>
+        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-[700px]">
+          <h3 className="text-xl font-bold mb-6 text-gray-800 border-b pb-4">
             Veterinarian Verification
           </h3>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            {vets.map(vet => (
-              <li key={vet.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem', borderBottom: '1px solid #e5e7eb' }}>
-                <div>
-                  <div style={{ fontWeight: 'bold' }}>{vet.full_name}</div>
-                  <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>{vet.county}</div>
-                </div>
-                <div>
-                  {vet.verified ? (
-                    <button onClick={() => handleVerifyVet(vet.id, false)} style={{ backgroundColor: '#ef4444', color: 'white', padding: '0.25rem 0.5rem', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Revoke</button>
-                  ) : (
-                    <button onClick={() => handleVerifyVet(vet.id, true)} style={{ backgroundColor: '#10b981', color: 'white', padding: '0.25rem 0.5rem', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Verify</button>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-          {vets.length === 0 && <p style={{ color: '#6b7280' }}>No registered vets found.</p>}
+          <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+            <ul className="space-y-4">
+              {vets.map(vet => (
+                <li key={vet.id} className="flex justify-between items-center p-5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-white hover:shadow-md transition">
+                  <div>
+                    <div className="font-bold text-gray-800 text-lg flex items-center gap-2">
+                      {vet.full_name}
+                      {vet.verified ? <CheckCircle className="w-4 h-4 text-green-500" /> : <XCircle className="w-4 h-4 text-gray-400" />}
+                    </div>
+                    <div className="text-sm text-gray-500 mt-1">{vet.county}</div>
+                  </div>
+                  <div>
+                    {vet.verified ? (
+                      <button onClick={() => handleVerifyVet(vet.id, false)} className="bg-white text-red-600 border border-red-200 px-4 py-2 rounded-lg font-bold hover:bg-red-50 transition text-sm">
+                        Revoke Access
+                      </button>
+                    ) : (
+                      <button onClick={() => handleVerifyVet(vet.id, true)} className="bg-green-600 text-white border border-green-600 px-4 py-2 rounded-lg font-bold hover:bg-green-700 transition shadow-sm text-sm">
+                        Verify Vet
+                      </button>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+            {vets.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500 font-medium">No registered vets found.</p>
+              </div>
+            )}
+          </div>
         </div>
 
       </div>
