@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const { open } = require('sqlite');
 const path = require('path');
+const bcrypt = require('bcrypt');
 
 const dbPath = path.resolve(__dirname, 'database.sqlite');
 
@@ -156,6 +157,17 @@ async function initializeDb() {
       UNIQUE(agri_supplier_id, bull_id)
     );
   `);
+
+    // Seed default admin if not exists
+    const existingAdmin = await db.get("SELECT * FROM users WHERE username = 'admin'");
+    if (!existingAdmin) {
+        const hashedPassword = await bcrypt.hash('securepassword', 10);
+        await db.run(
+            "INSERT INTO users (username, password, role) VALUES (?, ?, 'admin')",
+            ['admin', hashedPassword]
+        );
+        console.log('Seeded default admin user');
+    }
 
     return db;
 }
