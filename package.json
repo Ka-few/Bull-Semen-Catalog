@@ -1,0 +1,12 @@
+{
+  "name": "bull-semen-catalog",
+  "version": "1.0.0",
+  "description": "Monorepo root — delegates to backend/",
+  "scripts": {
+    "build": "cd backend && npm install",
+    "start": "cd backend && node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
