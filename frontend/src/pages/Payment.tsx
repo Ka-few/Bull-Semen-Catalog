@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/config';
 import { CheckCircle, CreditCard, MapPin, User, Package, Truck } from 'lucide-react';
@@ -7,7 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 export default function Payment() {
     const { orderId } = useParams();
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
+    useContext(AuthContext);
     const [order, setOrder] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [processing, setProcessing] = useState(false);

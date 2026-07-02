@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import api from '../api/config';
 import { AuthContext } from '../context/AuthContext';
-import { Package, User, CheckCircle, Database, Trash2, PlusCircle, Edit2 } from 'lucide-react';
+import { Package, User, Database, Trash2, PlusCircle, Edit2 } from 'lucide-react';
 
 export default function SupplierDash() {
-    const { user } = useContext(AuthContext);
+    useContext(AuthContext);
     const [orders, setOrders] = useState<any[]>([]);
     const [profile, setProfile] = useState<any>(null);
     const [inventory, setInventory] = useState<any[]>([]);

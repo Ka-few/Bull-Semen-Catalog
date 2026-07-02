@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../api/config';
 import { MapPin, Phone, Star } from 'lucide-react';
 
