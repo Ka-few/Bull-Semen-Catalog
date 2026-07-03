@@ -51,7 +51,7 @@ The frontend Vite server will start on `http://localhost:5173`.
 
 ### Login Credentials
 For testing purposes, the following default credentials can be used:
-- **Admin:** Username: `admin` | Password: `admin123`
+- **Admin:** Username: `admin` | Password: `securepassword`
 
 You can register new accounts for Farmers, Vets, and Agri-Suppliers directly through the `/register` page.
 
