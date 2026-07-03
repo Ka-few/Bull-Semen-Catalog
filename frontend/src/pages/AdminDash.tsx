@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/config';
 import toast from 'react-hot-toast';
-import { ShieldAlert, Trash2, PlusCircle, CheckCircle, XCircle } from 'lucide-react';
+import { ShieldAlert, Trash2, PlusCircle, CheckCircle, XCircle, Edit2 } from 'lucide-react';
 
 interface Bull {
   id: number;
   name: string;
   breed: string;
   stock_available: number;
+  semen_price?: number;
+  milk_yield?: number;
+  image_url?: string;
 }
 
 interface Vet {
@@ -26,6 +29,8 @@ const AdminDash = () => {
   const [newBullPrice, setNewBullPrice] = useState('');
   const [newBullMilk, setNewBullMilk] = useState('');
   const [newBullImage, setNewBullImage] = useState('');
+
+  const [editingBullId, setEditingBullId] = useState<number | null>(null);
 
   const fetchBulls = async () => {
     const res = await api.get('/bulls');
@@ -65,25 +70,47 @@ const AdminDash = () => {
     }
   };
 
-  const handleCreateBull = async (e: React.FormEvent) => {
+  const handleEditBull = (bull: Bull) => {
+    setEditingBullId(bull.id);
+    setNewBullName(bull.name);
+    setNewBullBreed(bull.breed);
+    setNewBullPrice(bull.semen_price?.toString() || '');
+    setNewBullMilk(bull.milk_yield?.toString() || '');
+    setNewBullImage(bull.image_url || '');
+  };
+
+  const cancelEdit = () => {
+    setEditingBullId(null);
+    setNewBullName('');
+    setNewBullBreed('');
+    setNewBullPrice('');
+    setNewBullMilk('');
+    setNewBullImage('');
+  };
+
+  const handleSubmitBull = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.post('/bulls', {
+      const payload = {
         name: newBullName,
         breed: newBullBreed,
         semen_price: parseFloat(newBullPrice),
         milk_yield: parseFloat(newBullMilk),
         image_url: newBullImage || undefined,
-      });
+      };
+
+      if (editingBullId) {
+        await api.put(`/bulls/${editingBullId}`, payload);
+        toast.success("Bull updated successfully");
+      } else {
+        await api.post('/bulls', payload);
+        toast.success("Bull created successfully");
+      }
+      
       fetchBulls();
-      setNewBullName('');
-      setNewBullBreed('');
-      setNewBullPrice('');
-      setNewBullMilk('');
-      setNewBullImage('');
-      toast.success("Bull created successfully");
+      cancelEdit();
     } catch (err) {
-      toast.error("Failed to create bull");
+      toast.error(editingBullId ? "Failed to update bull" : "Failed to create bull");
     }
   };
 
@@ -107,8 +134,10 @@ const AdminDash = () => {
             Bull Catalog Management
           </h3>
 
-          <form onSubmit={handleCreateBull} className="bg-gray-50 p-6 rounded-xl border border-gray-100 space-y-4 mb-8">
-            <h4 className="font-bold text-gray-700 flex items-center gap-2"><PlusCircle className="w-5 h-5"/> Add Quick Bull</h4>
+          <form onSubmit={handleSubmitBull} className="bg-gray-50 p-6 rounded-xl border border-gray-100 space-y-4 mb-8">
+            <h4 className="font-bold text-gray-700 flex items-center gap-2">
+              <PlusCircle className="w-5 h-5"/> {editingBullId ? 'Update Bull' : 'Add Quick Bull'}
+            </h4>
             <div className="grid grid-cols-2 gap-4">
               <input type="text" placeholder="Name" value={newBullName} onChange={e => setNewBullName(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
               <input type="text" placeholder="Breed" value={newBullBreed} onChange={e => setNewBullBreed(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
@@ -116,7 +145,16 @@ const AdminDash = () => {
               <input type="number" placeholder="Milk Yield (kg)" value={newBullMilk} onChange={e => setNewBullMilk(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
               <input type="text" placeholder="Image URL (optional)" value={newBullImage} onChange={e => setNewBullImage(e.target.value)} className="col-span-2 p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
             </div>
-            <button type="submit" className="w-full p-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-md">Add Bull to Catalog</button>
+            <div className="flex gap-3">
+              <button type="submit" className="flex-1 p-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-md">
+                {editingBullId ? 'Update Bull' : 'Add Bull to Catalog'}
+              </button>
+              {editingBullId && (
+                <button type="button" onClick={cancelEdit} className="p-3 bg-gray-300 text-gray-800 font-bold rounded-xl hover:bg-gray-400 transition shadow-md">
+                  Cancel
+                </button>
+              )}
+            </div>
           </form>
 
           <div className="flex-1 overflow-hidden flex flex-col">
@@ -128,9 +166,14 @@ const AdminDash = () => {
                     <span className="font-bold text-gray-800 block">{bull.name}</span>
                     <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">{bull.breed}</span>
                   </div>
-                  <button onClick={() => handleDeleteBull(bull.id)} className="text-red-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition" title="Delete">
-                    <Trash2 className="w-5 h-5"/>
-                  </button>
+                  <div className="flex gap-1">
+                    <button onClick={() => handleEditBull(bull)} className="text-blue-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition" title="Edit">
+                      <Edit2 className="w-5 h-5"/>
+                    </button>
+                    <button onClick={() => handleDeleteBull(bull.id)} className="text-red-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition" title="Delete">
+                      <Trash2 className="w-5 h-5"/>
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>

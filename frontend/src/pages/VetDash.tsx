@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import api from '../api/config';
 import { AuthContext } from '../context/AuthContext';
-import { Stethoscope, Package, MapPin, CheckCircle, Clock, Truck, ChevronRight } from 'lucide-react';
+import { Stethoscope, Package, MapPin, CheckCircle, Clock, Truck, ChevronRight, Edit2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const STATUS_CONFIG: Record<string, { color: string; label: string; icon: React.ReactNode }> = {
@@ -27,6 +27,33 @@ const VetDash = () => {
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
     const [fee, setFee] = useState('');
+    const [isEditingProfile, setIsEditingProfile] = useState(false);
+
+    const startEditing = () => {
+        setFullName(vetProfile.full_name);
+        setPhone(vetProfile.phone_number);
+        setCounty(vetProfile.county);
+        setSubCounty(vetProfile.sub_county);
+        setLatitude(vetProfile.latitude?.toString() || '');
+        setLongitude(vetProfile.longitude?.toString() || '');
+        setFee(vetProfile.service_fee?.toString() || '');
+        setIsEditingProfile(true);
+    };
+
+    const handleUpdateProfile = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            await api.put('/vets/profile', {
+                full_name: fullName, phone_number: phone, county, sub_county: subCounty,
+                latitude: parseFloat(latitude), longitude: parseFloat(longitude), service_fee: parseFloat(fee)
+            });
+            toast.success('Profile updated successfully!');
+            setIsEditingProfile(false);
+            fetchData();
+        } catch (err) {
+            toast.error('Failed to update profile');
+        }
+    };
 
     const fetchData = async () => {
         setLoading(true);
@@ -128,46 +155,72 @@ const VetDash = () => {
 
                     {/* ---- Profile Card ---- */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-8 hover:shadow-md transition-shadow duration-300">
-                        <div className="text-center mb-6">
-                            <div className="w-20 h-20 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-sm">
-                                <Stethoscope className="h-10 w-10 text-blue-600" />
-                            </div>
-                            <h3 className="font-bold text-gray-800 text-xl">{vetProfile.full_name}</h3>
-                            <p className="text-sm text-gray-500 mt-1 flex items-center justify-center gap-1">
-                                <MapPin className="h-3 w-3" /> {vetProfile.county}, {vetProfile.sub_county}
-                            </p>
-                        </div>
-                        <div className="space-y-4 text-sm bg-gray-50 p-4 rounded-xl">
-                            <div className="flex justify-between items-center">
-                                <span className="text-gray-500 font-medium">Status</span>
-                                <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${vetProfile.verified ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-yellow-100 text-yellow-700 border border-yellow-200'}`}>
-                                    {vetProfile.verified ? '✓ Verified' : '⏳ Pending'}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-gray-500 font-medium">Service Fee</span>
-                                <span className="font-bold text-green-600 bg-green-50 px-2 py-1 rounded-md">KES {vetProfile.service_fee}</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-gray-500 font-medium">Phone</span>
-                                <span className="font-medium text-gray-700">{vetProfile.phone_number}</span>
-                            </div>
-                        </div>
-                        <hr className="my-6 border-gray-100" />
-                        <div className="grid grid-cols-3 text-center text-sm gap-2">
-                            <div>
-                                <p className="font-bold text-blue-600 text-xl">{pendingOrders.length}</p>
-                                <p className="text-gray-400 text-xs">Pending</p>
-                            </div>
-                            <div>
-                                <p className="font-bold text-purple-600 text-xl">{activeOrders.length}</p>
-                                <p className="text-gray-400 text-xs">Active</p>
-                            </div>
-                            <div>
-                                <p className="font-bold text-green-600 text-xl">{doneOrders.length}</p>
-                                <p className="text-gray-400 text-xs">Done</p>
-                            </div>
-                        </div>
+                        {isEditingProfile ? (
+                            <form onSubmit={handleUpdateProfile} style={{ display: 'grid', gap: '0.75rem' }}>
+                                <h3 className="font-bold text-gray-800 text-xl mb-2">Edit Profile</h3>
+                                <input type="text" placeholder="Full Name" value={fullName} onChange={e => setFullName(e.target.value)} required className="p-3 border rounded-lg w-full text-sm" />
+                                <input type="text" placeholder="Phone Number" value={phone} onChange={e => setPhone(e.target.value)} required className="p-3 border rounded-lg w-full text-sm" />
+                                <input type="text" placeholder="County" value={county} onChange={e => setCounty(e.target.value)} required className="p-3 border rounded-lg text-sm" />
+                                <input type="text" placeholder="Sub-county" value={subCounty} onChange={e => setSubCounty(e.target.value)} required className="p-3 border rounded-lg text-sm" />
+                                <input type="number" step="any" placeholder="Latitude" value={latitude} onChange={e => setLatitude(e.target.value)} required className="p-3 border rounded-lg text-sm" />
+                                <input type="number" step="any" placeholder="Longitude" value={longitude} onChange={e => setLongitude(e.target.value)} required className="p-3 border rounded-lg text-sm" />
+                                <input type="number" placeholder="Service Fee (KES)" value={fee} onChange={e => setFee(e.target.value)} required className="p-3 border rounded-lg w-full text-sm" />
+                                <div className="flex gap-2 mt-2">
+                                    <button type="submit" className="flex-1 bg-blue-600 text-white p-2 rounded-lg font-bold hover:bg-blue-700 transition text-sm">
+                                        Save
+                                    </button>
+                                    <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 bg-gray-300 text-gray-800 p-2 rounded-lg font-bold hover:bg-gray-400 transition text-sm">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        ) : (
+                            <>
+                                <div className="text-center mb-6 relative">
+                                    <button onClick={startEditing} className="absolute right-0 top-0 text-blue-500 hover:bg-blue-50 p-2 rounded-full transition" title="Edit Profile">
+                                        <Edit2 className="w-5 h-5"/>
+                                    </button>
+                                    <div className="w-20 h-20 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-sm">
+                                        <Stethoscope className="h-10 w-10 text-blue-600" />
+                                    </div>
+                                    <h3 className="font-bold text-gray-800 text-xl">{vetProfile.full_name}</h3>
+                                    <p className="text-sm text-gray-500 mt-1 flex items-center justify-center gap-1">
+                                        <MapPin className="h-3 w-3" /> {vetProfile.county}, {vetProfile.sub_county}
+                                    </p>
+                                </div>
+                                <div className="space-y-4 text-sm bg-gray-50 p-4 rounded-xl">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-500 font-medium">Status</span>
+                                        <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-sm ${vetProfile.verified ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-yellow-100 text-yellow-700 border border-yellow-200'}`}>
+                                            {vetProfile.verified ? '✓ Verified' : '⏳ Pending'}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-500 font-medium">Service Fee</span>
+                                        <span className="font-bold text-green-600 bg-green-50 px-2 py-1 rounded-md">KES {vetProfile.service_fee}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-500 font-medium">Phone</span>
+                                        <span className="font-medium text-gray-700">{vetProfile.phone_number}</span>
+                                    </div>
+                                </div>
+                                <hr className="my-6 border-gray-100" />
+                                <div className="grid grid-cols-3 text-center text-sm gap-2">
+                                    <div>
+                                        <p className="font-bold text-blue-600 text-xl">{pendingOrders.length}</p>
+                                        <p className="text-gray-400 text-xs">Pending</p>
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-purple-600 text-xl">{activeOrders.length}</p>
+                                        <p className="text-gray-400 text-xs">Active</p>
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-green-600 text-xl">{doneOrders.length}</p>
+                                        <p className="text-gray-400 text-xs">Done</p>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
 
                     {/* ---- Orders ---- */}

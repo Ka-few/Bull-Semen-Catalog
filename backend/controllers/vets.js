@@ -109,3 +109,40 @@ exports.verifyVet = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+exports.updateVetProfile = async (req, res) => {
+    try {
+        const db = await getDb();
+        const {
+            full_name, phone_number, county, sub_county,
+            latitude, longitude, service_fee
+        } = req.body;
+
+        const user = req.user;
+
+        const existingVet = await db.get('SELECT * FROM vets WHERE user_id = ?', [user.id]);
+        if (!existingVet) {
+            return res.status(404).json({ error: 'Vet profile not found' });
+        }
+
+        await db.run(`
+            UPDATE vets SET
+                full_name = COALESCE(?, full_name),
+                phone_number = COALESCE(?, phone_number),
+                county = COALESCE(?, county),
+                sub_county = COALESCE(?, sub_county),
+                latitude = COALESCE(?, latitude),
+                longitude = COALESCE(?, longitude),
+                service_fee = COALESCE(?, service_fee)
+            WHERE user_id = ?
+        `, [
+            full_name, phone_number, county, sub_county,
+            latitude, longitude, service_fee, user.id
+        ]);
+
+        res.json({ message: 'Vet profile updated successfully' });
+    } catch (error) {
+        console.error('Error updating vet profile:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
