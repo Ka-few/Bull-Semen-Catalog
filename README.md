@@ -2,6 +2,11 @@
 
 A comprehensive digital platform connecting dairy farmers with top-tier genetics, certified veterinary professionals, and agricultural semen suppliers.
 
+## Live Links
+- **Live Demo (Frontend):** [https://digital-bull-catalog-amber.vercel.app/](https://digital-bull-catalog-amber.vercel.app/)
+- **Backend API:** [https://digital-bull-cataloge.onrender.com](https://digital-bull-cataloge.onrender.com)
+- **GitHub Repository:** [https://github.com/Ka-few/Bull-Semen-Catalog](https://github.com/Ka-few/Bull-Semen-Catalog)
+
 ## Description
 This application allows farmers to browse a catalog of high-quality bull semen, place orders, and coordinate artificial insemination (AI) services. It handles the entire logistics pipeline:
 1. **Farmers** can browse semen based on traits, yield data, and lineage, then place orders which require selecting a nearby certified vet and a local semen supplier.
