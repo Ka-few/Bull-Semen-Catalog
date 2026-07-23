@@ -18,11 +18,18 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 
+const allowedOrigins = [
+    "http://localhost:5173", // Local development
+    process.env.CLIENT_URL,   // Production frontend from env
+    "https://digital-bull-catalog-amber.vercel.app" // Fallback production frontend
+].filter(Boolean);
+
 app.use(cors({
-    origin: [
-        "http://localhost:5173", // Local development
-        process.env.CLIENT_URL    // Production frontend
-    ].filter(Boolean),
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        callback(new Error(`CORS origin denied: ${origin}`));
+    },
     credentials: true
 }));
 
