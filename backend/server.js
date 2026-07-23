@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
-const { getDb } = require('./db');
 
 const authRoutes = require('./routes/auth');
 const bullsRoutes = require('./routes/bulls');
@@ -20,13 +19,6 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
-
-// Setup DB
-getDb().then(() => {
-    console.log('Database initialized successfully.');
-}).catch(err => {
-    console.error('Failed to initialize database:', err);
-});
 
 // Routes
 app.use('/api/auth', authRoutes);

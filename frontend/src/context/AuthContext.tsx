@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 interface User {
-    id: number;
+    id: string;
     username: string;
     role: 'farmer' | 'vet' | 'admin' | 'agri-supplier';
 }

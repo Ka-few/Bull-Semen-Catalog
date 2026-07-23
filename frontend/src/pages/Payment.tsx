@@ -43,9 +43,10 @@ export default function Payment() {
             } else {
                 toast.error("Payment failed. Please try again.");
             }
-        } catch (err) {
-            toast.error('Payment failed. Please try again.');
-            console.error(err);
+        } catch (err: any) {
+            const message = err.response?.data?.error || 'Payment failed. Please try again.';
+            toast.error(message);
+            console.error('Payment error:', err.response?.status, err.response?.data || err);
         } finally {
             setProcessing(false);
         }
