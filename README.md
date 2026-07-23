@@ -1,59 +1,56 @@
 # Bull Semen Catalog & AI Logistics Platform
 
-A comprehensive digital platform connecting dairy farmers with top-tier genetics, certified veterinary professionals, and agricultural semen suppliers.
+A full-stack digital marketplace for dairy farmers to discover premium bull semen, connect with certified veterinarians, and order logistics services from agricultural suppliers.
 
 ## Live Links
-- **Live Demo (Frontend):** [https://digital-bull-catalog-amber.vercel.app/](https://digital-bull-catalog-amber.vercel.app/)
-- **Backend API:** [https://digital-bull-cataloge.onrender.com](https://digital-bull-cataloge.onrender.com)
-- **GitHub Repository:** [https://github.com/Ka-few/Bull-Semen-Catalog](https://github.com/Ka-few/Bull-Semen-Catalog)
+- **Live Demo (Frontend):** https://digital-bull-catalog-amber.vercel.app/
+- **Backend API:** https://bull-catalog.onrender.com/
+- **GitHub Repository:** https://github.com/Ka-few/Bull-Semen-Catalog
 
-## Description
-This application allows farmers to browse a catalog of high-quality bull semen, place orders, and coordinate artificial insemination (AI) services. It handles the entire logistics pipeline:
-1. **Farmers** can browse semen based on traits, yield data, and lineage, then place orders which require selecting a nearby certified vet and a local semen supplier.
-2. **Vets** have a dedicated dashboard to manage their profiles, set their service radius and fees, and track the status of AI orders assigned to them (from allocation, to fetching the semen, to completing the insemination).
-3. **Agri-Suppliers** manage their own localized inventory of semen, allowing them to stock specific bulls and manage quantities.
-4. **Admins** maintain the global catalog of bulls.
+## Project Overview
+This platform supports the full AI (artificial insemination) logistics workflow for dairy operations:
+- Farmers can browse bulls, review traits and pedigree, and place semen orders.
+- Vets can manage availability, service radius, and order assignments for AI work.
+- Agri-suppliers can maintain localized inventory and stock levels for semen products.
+- Admins can manage the bull catalog, user roles, and application data.
+- Default Admin credetials
+    username: admin
+    password: securepassword
 
 ## Key Features
-- **Role-Based Access Control (RBAC):** Distinct dashboards and capabilities for Farmers, Vets, Agri-Suppliers, and Admins.
-- **Geospatial Logistics:** Integrates Leaflet maps to allow farmers to visually pinpoint delivery locations, and matches them with nearby vets and suppliers based on coordinates and distance algorithms.
-- **Inventory Management:** Suppliers maintain their own localized stock, which updates dynamically.
-- **Order Tracking:** Full end-to-end status tracking (`pending`, `allocated`, `fetched_by_vet`, `completed`).
+- Role-based dashboards for Farmers, Vets, Agri-Suppliers, and Admins.
+- Geospatial mapping and location-based matching for vet and supplier selection.
+- Inventory tracking and order status management.
+- Secure authentication and protected API routes.
 
 ## Technologies Used
-- **Frontend:** React, TypeScript, Vite, TailwindCSS, Lucide React, Leaflet (React-Leaflet)
-- **Backend:** Node.js, Express.js
-- **Database:** SQLite3
+- Frontend: React, TypeScript, Vite, Tailwind CSS, Axios, React Router, React Leaflet
+- Backend: Node.js, Express.js, Supabase client integration
+- Database: SQLite (local development)
 
-## Instructions for Local Development
-
+## Local Development
 ### Prerequisites
-- Node.js installed on your machine.
+- Node.js installed.
 
-### Setup and Running
-You will need to run both the frontend and backend servers simultaneously.
-
-**1. Backend Setup:**
+### Run the Backend
 ```bash
 cd backend
 npm install
 npm run dev
 ```
-The backend server will start on `http://localhost:5000`. The SQLite database will automatically initialize.
+The backend runs on `http://localhost:5000`.
 
-**2. Frontend Setup:**
+### Run the Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-The frontend Vite server will start on `http://localhost:5173`.
+The frontend runs on `http://localhost:5173`.
 
-### Login Credentials
-For testing purposes, the following default credentials can be used:
-- **Admin:** Username: `admin` | Password: `securepassword`
-
-You can register new accounts for Farmers, Vets, and Agri-Suppliers directly through the `/register` page.
+## Notes
+- Set `CLIENT_URL` in your backend environment to your deployed frontend origin for production.
+- The live demo front end is hosted on Vercel and connects to the Render backend.
 
 ## License
 MIT License
