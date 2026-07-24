@@ -34,11 +34,11 @@ The frontend lives in `frontend/`; the Express API lives in `backend/`. Supabase
 
 ## Screenshots
 
-> Add real product captures to `docs/screenshots/` using the filenames below. Keeping screenshots in the repository makes the README render on GitHub and gives recruiters a quick product tour.
+The main farmer catalog, supplier dashboard, and payment flow.
 
 | Catalog | Role dashboard | Checkout |
 | --- | --- | --- |
-| `![Bull catalog](docs/screenshots/catalog.png)` | `![Supplier dashboard](docs/screenshots/supplier-dashboard.png)` | `![Order payment](docs/screenshots/payment.png)` |
+| ![Bull catalog](docs/screenshots/catalog.png) | ![Supplier dashboard](docs/screenshots/supplier-dashboard.png) | ![Order payment](docs/screenshots/payment.png) |
 
 ## Local setup
 
