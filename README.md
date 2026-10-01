@@ -1,8 +1,92 @@
-# PrimeGenetics — Bull Semen Catalog
 
-A role-based marketplace for dairy farmers to discover bull semen, arrange veterinary AI services, and source stock from agri-suppliers.
+# 🐄 PrimeGenetics: Bull Semen Catalog
+
+**A role-based marketplace where dairy farmers discover bull genetics, book a nearby vet for artificial insemination, and pay via M-Pesa.**
+
+🔗 **Live demo:** https://digital-bull-catalog-amber.vercel.app/
+⚙️ **API:** https://bull-catalog.onrender.com/
+🎥 **2-min walkthrough:** [add link]
+💻 **Repo:** https://github.com/Ka-few/Bull-Semen-Catalog
+
+![PrimeGenetics screenshot](./screenshots/home.png)
+
+> ⏳ The API runs on a free tier, so the first request can take 30–60 seconds to wake up.
+
+## The problem
+Smallholder dairy farmers often struggle to find quality genetics, a reliable
+AI vet, and a simple way to pay for both. PrimeGenetics brings the three steps
+into one flow, built by a former dairy farmer who lived the problem.
+
+## What it does
+- **Farmers** browse and filter bulls, manage a cart, place orders, and pay with M-Pesa (Daraja STK Push, sandbox).
+- **Vets** maintain profiles, get verified by admins, and see their assigned orders.
+- **Agri-suppliers** manage profiles and bull inventory.
+- **Admins** manage the bull catalog and verify vets.
+- **Location-aware results** (React Leaflet + OpenStreetMap) help farmers find nearby vets and suppliers.
+
+## Try it
+| Role | Email | Password |
+|---|---|---|
+| Farmer | [demo email] | [demo password] |
+| Vet | [demo email] | [demo password] |
+| Admin | [demo email] | [demo password] |
+
+## Architecture
+```
+React + TypeScript + Vite
+          │ HTTP / Bearer token
+          ▼
+Node.js + Express API ──── Safaricom Daraja (M-Pesa)
+          │ @supabase/supabase-js
+          ▼
+Supabase Auth ── PostgreSQL + RLS ── Storage
+```
+Supabase Auth owns passwords and sessions. PostgreSQL stores profiles, catalog,
+carts, orders, and inventory. **Row Level Security** scopes every query to the
+authenticated user's role, so a farmer can never read a vet's or supplier's data.
+
+## Tech stack
+| Layer | Tools |
+|---|---|
+| Frontend | React, TypeScript, Vite, Tailwind CSS, Axios, React Router, React Leaflet (Vercel) |
+| Backend | Node.js, Express (Render) |
+| Data & auth | Supabase: Auth, PostgreSQL, RLS, Storage |
+| Integrations | Safaricom Daraja API, OpenStreetMap |
+
+## Run it locally
+```bash
+git clone https://github.com/Ka-few/Bull-Semen-Catalog
+cd Bull-Semen-Catalog
+
+# Backend
+cd backend && npm install
+cp .env.example .env     # add your keys
+npm run dev
+
+# Frontend
+cd ../frontend && npm install
+npm run dev
+```
+**Backend env:** `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `DARAJA_CONSUMER_KEY`,
+`DARAJA_CONSUMER_SECRET`, `DARAJA_SHORTCODE`, `DARAJA_PASSKEY`, `DARAJA_CALLBACK_URL`
+**Frontend env:** `VITE_API_URL`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
+
+## Challenges I solved
+- [e.g. handling the Daraja callback and matching it to the right order]
+- [e.g. designing RLS policies for four roles]
+
+## Roadmap
+- [ ] Live M-Pesa payments (currently sandbox)
+- [ ] SMS notifications for vets and farmers
+- [ ] Vet ratings and reviews
+
+## Author
+**[Your name]**: full-stack developer and former dairy farmer.
+[LinkedIn] · [Email]
+
 
 **Live demo:** https://digital-bull-catalog-amber.vercel.app/ · **API:** https://bull-catalog.onrender.com/ · **Repository:** https://github.com/Ka-few/Bull-Semen-Catalog
+
 
 ## What it does
 
@@ -27,6 +111,10 @@ Supabase Auth ── PostgreSQL + RLS ── Storage
 The frontend lives in `frontend/`; the Express API lives in `backend/`. Supabase Auth owns passwords and sessions. PostgreSQL stores application profiles, catalog, carts, orders, and inventory. Row Level Security scopes data to the authenticated user and role.
 
 ## Stack
+
+Repository: [link here] (https://github.com/Ka-few/Bull-Semen-Catalog)
+Deployed API: [live API URL] (https://bull-semen-catalog-2.onrender.com/bulls)
+
 
 - Frontend: React, TypeScript, Vite, Tailwind CSS, Axios, React Router, React Leaflet
 - Backend: Node.js, Express, Supabase JavaScript client
