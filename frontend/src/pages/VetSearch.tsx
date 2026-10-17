@@ -103,13 +103,13 @@ const VetSearch = () => {
 
               <div className="space-y-3 mb-6 flex-1">
                 <div className="flex items-center gap-3 text-slate-600 font-medium">
-                  <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center shrink-0">
                     <MapPin className="w-4 h-4 text-slate-400" />
                   </div>
                   <span className="truncate">{vet.sub_county}, {vet.county}</span>
                 </div>
                 <div className="flex items-center gap-3 text-slate-600 font-medium">
-                  <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center shrink-0">
                     <Phone className="w-4 h-4 text-slate-400" />
                   </div>
                   <span>{vet.phone_number}</span>
