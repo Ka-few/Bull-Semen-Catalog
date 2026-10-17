@@ -42,7 +42,7 @@ const VetSearch = () => {
     <div className="max-w-7xl mx-auto animate-fade-in">
       {/* Header Area */}
       <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-100 mb-8 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 opacity-50"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 opacity-50"></div>
         
         <div className="relative z-10 max-w-2xl">
           <h2 className="text-4xl font-black text-slate-900 tracking-tight mb-4">Find a Verified Vet</h2>
@@ -59,7 +59,7 @@ const VetSearch = () => {
               value={countyFilter}
               onChange={e => setCountyFilter(e.target.value)}
               placeholder="Search by County (e.g. Kiambu)"
-              className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-full focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-bold text-slate-900 shadow-inner"
+              className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-full focus:ring-4 focus:ring-amber-100 focus:border-amber-500 outline-none transition-all font-bold text-slate-900 shadow-inner"
             />
           </div>
         </div>
@@ -68,13 +68,13 @@ const VetSearch = () => {
       {/* Results Area */}
       {loading ? (
         <div className="text-center py-20">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
           <p className="text-slate-500 font-bold tracking-wide">Searching for specialists...</p>
         </div>
       ) : vets.length === 0 ? (
         <div className="text-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
           <p className="text-slate-500 text-lg font-bold">No verified vets found in this area.</p>
-          <button onClick={() => setCountyFilter('')} className="mt-4 text-indigo-600 hover:underline font-bold">Clear search</button>
+          <button onClick={() => setCountyFilter('')} className="mt-4 text-amber-600 hover:underline font-bold">Clear search</button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -83,7 +83,7 @@ const VetSearch = () => {
               
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-indigo-100 to-blue-50 rounded-2xl flex items-center justify-center text-indigo-700 font-black text-xl shadow-inner">
+                  <div className="w-14 h-14 bg-linear-to-br from-amber-100 to-green-50 rounded-2xl flex items-center justify-center text-amber-700 font-black text-xl shadow-inner">
                     {vet.full_name.charAt(0)}
                   </div>
                   <div>

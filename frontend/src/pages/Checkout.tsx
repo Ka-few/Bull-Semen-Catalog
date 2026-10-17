@@ -84,9 +84,9 @@ export default function Checkout() {
     }
 
     return (
-        <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 animate-fade-in bg-gray-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
             <h2 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-                <ShieldCheck className="h-8 w-8 text-blue-600" /> Secure Checkout
+                <ShieldCheck className="h-8 w-8 text-green-600" /> Secure Checkout
             </h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -94,9 +94,9 @@ export default function Checkout() {
                 <div className="lg:col-span-2 space-y-8">
                     
                     {/* Step 1: Location */}
-                    <div className={`bg-white p-6 md:p-8 rounded-2xl shadow-sm border transition-all duration-300 ${step === 1 ? 'border-blue-400 shadow-md ring-4 ring-blue-50' : 'border-gray-200'}`}>
+                    <div className={`bg-white p-6 md:p-8 rounded-2xl shadow-sm border transition-all duration-300 ${step === 1 ? 'border-green-400 shadow-md ring-4 ring-green-50' : 'border-gray-200'}`}>
                         <h3 className="text-xl font-bold mb-4 flex items-center text-gray-800">
-                            <span className={`w-8 h-8 rounded-full flex items-center justify-center text-white mr-3 font-bold ${step === 1 ? 'bg-blue-600' : 'bg-gray-400'}`}>
+                            <span className={`w-8 h-8 rounded-full flex items-center justify-center text-white mr-3 font-bold ${step === 1 ? 'bg-green-600' : 'bg-gray-400'}`}>
                                 {step > 1 ? <CheckCircle2 className="w-5 h-5" /> : '1'}
                             </span>
                             Set Delivery Location
@@ -113,16 +113,16 @@ export default function Checkout() {
                                 <div className="flex items-center text-green-700 font-bold">
                                     <MapPin className="mr-2 h-5 w-5" /> Location Set ({farmerLocation?.lat.toFixed(4)}, {farmerLocation?.lng.toFixed(4)})
                                 </div>
-                                <button onClick={() => setStep(1)} className="text-blue-600 hover:text-blue-700 font-semibold hover:underline text-sm transition">Change Location</button>
+                                <button onClick={() => setStep(1)} className="text-green-600 hover:text-green-700 font-semibold hover:underline text-sm transition">Change Location</button>
                             </div>
                         )}
                     </div>
 
                     {/* Step 2: Provider Selection */}
                     {step >= 2 && (
-                        <div className={`bg-white p-6 md:p-8 rounded-2xl shadow-sm border transition-all duration-300 ${step === 2 ? 'border-blue-400 shadow-md ring-4 ring-blue-50' : 'border-gray-200'} animate-fade-in`}>
+                        <div className={`bg-white p-6 md:p-8 rounded-2xl shadow-sm border transition-all duration-300 ${step === 2 ? 'border-green-400 shadow-md ring-4 ring-green-50' : 'border-gray-200'} animate-fade-in`}>
                             <h3 className="text-xl font-bold mb-4 flex items-center text-gray-800">
-                                <span className="w-8 h-8 rounded-full flex items-center justify-center text-white mr-3 font-bold bg-blue-600">2</span>
+                                <span className="w-8 h-8 rounded-full flex items-center justify-center text-white mr-3 font-bold bg-green-600">2</span>
                                 Select Vet and Supplier
                             </h3>
                             <p className="text-gray-500 text-sm mb-6">Choose a Vet for the service, and a Supplier where they will pick up the semen. Click the pins on the map, or select from the lists below.</p>
@@ -204,8 +204,8 @@ export default function Checkout() {
                         {cartItems.map(item => (
                             <div key={item.cart_id} className="flex justify-between items-center group">
                                 <div className="flex items-center gap-2">
-                                    <span className="bg-blue-50 text-blue-700 font-bold px-2 py-0.5 rounded text-xs">{item.quantity}x</span>
-                                    <span className="text-gray-700 font-medium group-hover:text-blue-600 transition">{item.name}</span>
+                                    <span className="bg-green-50 text-green-700 font-bold px-2 py-0.5 rounded text-xs">{item.quantity}x</span>
+                                    <span className="text-gray-700 font-medium group-hover:text-green-600 transition">{item.name}</span>
                                 </div>
                                 <span className="font-medium text-gray-600">KES {(item.quantity * item.semen_price).toLocaleString()}</span>
                             </div>
@@ -236,7 +236,7 @@ export default function Checkout() {
                         className={`w-full p-4 rounded-xl font-bold text-lg transition-all duration-300 flex justify-center items-center gap-2 ${
                             loading || !farmerLocation || !selectedSupplier 
                             ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                            : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+                            : 'bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
                         }`}
                     >
                         {loading ? <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div> : <>Confirm Allocation <ChevronRight className="w-5 h-5"/></>}

@@ -67,9 +67,10 @@ npm run dev
 cd ../frontend && npm install
 npm run dev
 ```
-**Backend env:** `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `DARAJA_CONSUMER_KEY`,
-`DARAJA_CONSUMER_SECRET`, `DARAJA_SHORTCODE`, `DARAJA_PASSKEY`, `DARAJA_CALLBACK_URL`
-**Frontend env:** `VITE_API_URL`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
+**Backend env:** `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`
+(`PORT` and `CLIENT_URL` are optional). Keep `SUPABASE_SECRET_KEY` server-side;
+never put it in frontend environment variables or commit `backend/.env`.
+**Frontend env:** `VITE_API_URL` (local default: `http://localhost:5000/api`).
 
 ## Challenges I solved
 - [e.g. handling the Daraja callback and matching it to the right order]
@@ -166,8 +167,13 @@ Prerequisites: Node.js 18+ and a Supabase project.
    ```bash
    cd frontend
    npm install
+   cp .env.example .env
    npm run dev
    ```
+
+   `VITE_API_URL` should point to the backend API base URL, for example
+   `http://localhost:5000/api`. Restart Vite after changing frontend environment
+   variables.
 
    Open `http://localhost:5173`.
 

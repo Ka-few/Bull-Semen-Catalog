@@ -36,12 +36,12 @@ const Register = () => {
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 animate-fade-in relative">
             {/* Background elements */}
             <div className="absolute inset-0 overflow-hidden -z-10 pointer-events-none">
-                <div className="absolute top-[20%] right-[20%] w-[40%] h-[40%] rounded-full bg-indigo-100/40 blur-3xl" />
-                <div className="absolute bottom-[20%] left-[20%] w-[30%] h-[30%] rounded-full bg-blue-100/40 blur-3xl" />
+                <div className="absolute top-[20%] right-[20%] w-[40%] h-[40%] rounded-full bg-amber-100/40 blur-3xl" />
+                <div className="absolute bottom-[20%] left-[20%] w-[30%] h-[30%] rounded-full bg-green-100/40 blur-3xl" />
             </div>
 
             <div className="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white p-8 md:p-10 relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 to-blue-600" />
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-500 to-green-600" />
                 
                 <div className="text-center mb-8">
                     <h2 className="text-3xl font-black text-slate-900 tracking-tight">Create Account</h2>
@@ -53,15 +53,15 @@ const Register = () => {
                     <div className="mb-6">
                         <label className="block text-sm font-bold text-slate-700 mb-3">I am a...</label>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <label className={`cursor-pointer rounded-xl border-2 p-3 flex flex-col items-center gap-2 transition-all ${role === 'farmer' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300'}`}>
+                            <label className={`cursor-pointer rounded-xl border-2 p-3 flex flex-col items-center gap-2 transition-all ${role === 'farmer' ? 'border-green-500 bg-green-50 text-green-700' : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300'}`}>
                                 <input type="radio" name="role" value="farmer" checked={role === 'farmer'} onChange={() => setRole('farmer')} className="hidden" />
-                                <ShieldCheck className={`w-6 h-6 ${role === 'farmer' ? 'text-blue-600' : ''}`} />
+                                <ShieldCheck className={`w-6 h-6 ${role === 'farmer' ? 'text-green-600' : ''}`} />
                                 <span className="text-xs font-bold text-center">Farmer</span>
                             </label>
                             
-                            <label className={`cursor-pointer rounded-xl border-2 p-3 flex flex-col items-center gap-2 transition-all ${role === 'vet' ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300'}`}>
+                            <label className={`cursor-pointer rounded-xl border-2 p-3 flex flex-col items-center gap-2 transition-all ${role === 'vet' ? 'border-amber-500 bg-amber-50 text-amber-700' : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300'}`}>
                                 <input type="radio" name="role" value="vet" checked={role === 'vet'} onChange={() => setRole('vet')} className="hidden" />
-                                <Stethoscope className={`w-6 h-6 ${role === 'vet' ? 'text-indigo-600' : ''}`} />
+                                <Stethoscope className={`w-6 h-6 ${role === 'vet' ? 'text-amber-600' : ''}`} />
                                 <span className="text-xs font-bold text-center">Vet Tech</span>
                             </label>
                             
@@ -83,7 +83,7 @@ const Register = () => {
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all font-medium text-slate-900"
+                                className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all font-medium text-slate-900"
                                 placeholder="Choose a username"
                                 required
                             />
@@ -100,7 +100,7 @@ const Register = () => {
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all font-medium text-slate-900"
+                                className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all font-medium text-slate-900"
                                 placeholder="Create a strong password"
                                 required
                             />
@@ -120,7 +120,7 @@ const Register = () => {
                                 className={`w-full pl-11 pr-4 py-3.5 bg-slate-50 border rounded-xl focus:ring-2 outline-none transition-all font-medium text-slate-900 ${
                                     confirmPassword && password !== confirmPassword 
                                     ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
-                                    : 'border-slate-200 focus:ring-blue-500 focus:border-blue-500'
+                                    : 'border-slate-200 focus:ring-green-500 focus:border-green-500'
                                 }`}
                                 placeholder="Repeat your password"
                                 required
@@ -139,7 +139,7 @@ const Register = () => {
 
                 <p className="text-center mt-8 text-sm font-medium text-slate-500">
                     Already have an account?{' '}
-                    <Link to="/login" className="text-blue-600 font-bold hover:text-blue-700 hover:underline">
+                    <Link to="/login" className="text-green-600 font-bold hover:text-green-700 hover:underline">
                         Sign in
                     </Link>
                 </p>

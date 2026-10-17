@@ -20,11 +20,11 @@ interface BullCardProps {
 
 // Breed-to-gradient mapping for visual variety
 const BREED_STYLES: Record<string, { gradient: string; badge: string }> = {
-  Holstein:  { gradient: 'from-slate-700 to-slate-900',   badge: 'bg-slate-100 text-slate-700' },
-  Jersey:    { gradient: 'from-amber-600 to-orange-800',  badge: 'bg-amber-100 text-amber-700' },
-  Ayrshire:  { gradient: 'from-red-600 to-rose-800',      badge: 'bg-red-100 text-red-700' },
-  Guernsey:  { gradient: 'from-yellow-500 to-amber-700',  badge: 'bg-yellow-100 text-yellow-700' },
-  default:   { gradient: 'from-blue-700 to-indigo-900',   badge: 'bg-blue-100 text-blue-700' },
+  Holstein:  { gradient: 'from-[#52645a] to-[#26352d]', badge: 'bg-[#efeee7] text-[#52645a]' },
+  Jersey:    { gradient: 'from-[#b87643] to-[#75523d]', badge: 'bg-[#f4e8dc] text-[#8d5735]' },
+  Ayrshire:  { gradient: 'from-[#9c5949] to-[#633d35]', badge: 'bg-[#f3e3dd] text-[#8b4c3d]' },
+  Guernsey:  { gradient: 'from-[#b49a53] to-[#7b6330]', badge: 'bg-[#f2edda] text-[#78632d]' },
+  default:   { gradient: 'from-[#71834b] to-[#24543c]', badge: 'bg-[#e9efdf] text-[#24543c]' },
 };
 
 const BullCard: React.FC<BullCardProps> = ({ bull }) => {
@@ -53,7 +53,7 @@ const BullCard: React.FC<BullCardProps> = ({ bull }) => {
 
   /* Image area */
   const imageArea = (
-    <div className="relative overflow-hidden h-36">
+    <div className="relative overflow-hidden h-40 bg-[#e7e5d9]">
       {bull.image_url && !imgError ? (
         <img
           src={bull.image_url}
@@ -62,11 +62,11 @@ const BullCard: React.FC<BullCardProps> = ({ bull }) => {
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
         />
       ) : (
-        <div className={`w-full h-full bg-gradient-to-br ${style.gradient} flex items-center justify-center`}>
+        <div className={`w-full h-full bg-linear-to-br ${style.gradient} flex items-center justify-center`}>
           <span className="absolute text-white/20 text-5xl font-black select-none">{bull.breed[0]}</span>
         </div>
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-[#17251d]/70 via-transparent to-transparent" />
       {/* Breed badge */}
       <div className={`absolute top-2 left-2 ${style.badge} text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm`}>
         {bull.breed}
@@ -79,7 +79,7 @@ const BullCard: React.FC<BullCardProps> = ({ bull }) => {
       )}
       {/* Name overlay */}
       <div className="absolute bottom-0 left-0 right-0 px-3 py-2">
-        <h3 className="text-white font-black text-sm leading-tight drop-shadow-lg group-hover:text-yellow-300 transition-colors duration-300 line-clamp-1">
+        <h3 className="text-white font-black text-base leading-tight drop-shadow-lg group-hover:text-[#dce6a2] transition-colors duration-300 line-clamp-1">
           {bull.name}
         </h3>
       </div>
@@ -87,31 +87,31 @@ const BullCard: React.FC<BullCardProps> = ({ bull }) => {
   );
 
   return (
-    <div className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col border border-gray-100 hover:-translate-y-1">
+    <div className="group relative bg-[#fffefa] rounded-2xl overflow-hidden shadow-[0_5px_18px_rgba(49,59,44,.06)] hover:shadow-[0_16px_36px_rgba(49,59,44,.14)] transition-all duration-300 flex flex-col border border-[#e8e7dc] hover:-translate-y-1">
       {imageArea}
 
       {/* Body */}
       <div className="p-3 flex-1 flex flex-col gap-3">
         {/* Stats row */}
         <div className="grid grid-cols-2 gap-2">
-          <div className="bg-blue-50 rounded-xl p-2 flex items-center gap-1.5">
-            <div className="bg-blue-100 p-1 rounded-lg flex-shrink-0">
-              <Droplets className="w-3 h-3 text-blue-600" />
+          <div className="bg-[#edf2e7] rounded-xl p-2 flex items-center gap-1.5">
+            <div className="bg-[#dce6cc] p-1 rounded-lg flex-shrink-0">
+              <Droplets className="w-3 h-3 text-[#55713c]" />
             </div>
             <div className="min-w-0">
-              <p className="text-[9px] text-blue-400 font-bold uppercase tracking-wider leading-none">Yield</p>
-              <p className="text-xs font-black text-blue-800 leading-tight">{bull.milk_yield.toLocaleString()} kg</p>
+              <p className="text-[9px] text-[#71834b] font-bold uppercase tracking-wider leading-none">Yield</p>
+              <p className="text-xs font-black text-[#24543c] leading-tight">{bull.milk_yield.toLocaleString()} kg</p>
             </div>
           </div>
 
           {bull.calving_ease !== undefined ? (
-            <div className="bg-green-50 rounded-xl p-2 flex items-center gap-1.5">
-              <div className="bg-green-100 p-1 rounded-lg flex-shrink-0">
-                <TrendingUp className="w-3 h-3 text-green-600" />
+          <div className="bg-[#f4e8dc] rounded-xl p-2 flex items-center gap-1.5">
+            <div className="bg-[#ead9ca] p-1 rounded-lg flex-shrink-0">
+              <TrendingUp className="w-3 h-3 text-[#a65d3b]" />
               </div>
               <div className="min-w-0">
-                <p className="text-[9px] text-green-400 font-bold uppercase tracking-wider leading-none">Calving</p>
-                <p className="text-xs font-black text-green-800 leading-tight">{bull.calving_ease}%</p>
+              <p className="text-[9px] text-[#a65d3b] font-bold uppercase tracking-wider leading-none">Calving</p>
+              <p className="text-xs font-black text-[#75523d] leading-tight">{bull.calving_ease}%</p>
               </div>
             </div>
           ) : (
@@ -128,10 +128,10 @@ const BullCard: React.FC<BullCardProps> = ({ bull }) => {
         </div>
 
         {/* Price + CTA */}
-        <div className="mt-auto flex items-center justify-between pt-2 border-t border-gray-100">
+        <div className="mt-auto flex items-center justify-between pt-3 border-t border-[#eeede5]">
           <div>
             <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider leading-none mb-0.5">Per straw</p>
-            <p className="text-base font-black text-gray-900 leading-tight">
+            <p className="text-base font-black text-[#26352d] leading-tight">
               <span className="text-xs font-bold text-gray-400 mr-0.5">KES</span>
               {bull.semen_price.toLocaleString()}
             </p>
@@ -144,7 +144,7 @@ const BullCard: React.FC<BullCardProps> = ({ bull }) => {
               className={`flex items-center gap-1 font-bold py-2 px-3 rounded-xl text-sm transition-all duration-200 shadow-sm
                 ${ adding
                   ? 'bg-gray-200 text-gray-400 cursor-wait'
-                  : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white hover:shadow-md hover:shadow-blue-200 hover:-translate-y-0.5 active:translate-y-0'
+                  : 'bg-gradient-to-r from-[#24543c] to-[#527048] hover:from-[#173b2a] hover:to-[#3e6038] text-white hover:shadow-md hover:shadow-[#dce6cc] hover:-translate-y-0.5 active:translate-y-0'
                 }`}
             >
               {adding

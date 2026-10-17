@@ -61,13 +61,13 @@ const Cart = () => {
                                             {item.image_url ? (
                                                 <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
                                             ) : (
-                                                <div className="w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center text-blue-300 font-black text-3xl">
+                                                <div className="w-full h-full bg-linear-to-br from-green-100 to-amber-100 flex items-center justify-center text-green-300 font-black text-3xl">
                                                     {item.breed[0]}
                                                 </div>
                                             )}
                                         </div>
                                         <div>
-                                            <div className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mb-1">{item.breed}</div>
+                                            <div className="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full inline-block mb-1">{item.breed}</div>
                                             <div className="font-bold text-slate-900 text-lg leading-tight">{item.name}</div>
                                         </div>
                                     </div>
@@ -133,7 +133,7 @@ const Cart = () => {
 
                         <button
                             onClick={() => navigate('/checkout')}
-                            className="w-full flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg hover:shadow-blue-200 hover:-translate-y-0.5 active:translate-y-0"
+                            className="w-full flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-green-600 to-amber-600 hover:from-green-500 hover:to-amber-500 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg hover:shadow-green-200 hover:-translate-y-0.5 active:translate-y-0"
                         >
                             Proceed to Checkout <ArrowRight className="w-5 h-5" />
                         </button>

@@ -1,21 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap');
 @import "tailwindcss";
 
-@layer base {
-  body {
-    font-family: 'Inter', sans-serif;
-  }
+:root {
+  font-family: 'DM Sans', sans-serif;
+  color: #26352d;
+  background: #eef0dc;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --forest: #24543c;
+  --forest-dark: #173b2a;
+  --moss: #71834b;
+  --clay: #a65d3b;
+  --earth: #75523d;
+  --paper: #eef0dc;
+  --line: #e5e4d9;
 }
 
-/* Custom Animations */
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--paper); }
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+h1, h2, h3, h4 { font-family: 'Manrope', 'DM Sans', sans-serif; }
+a { text-decoration: none; }
+::selection { background: #dce6cc; color: #173b2a; }
+
 @layer utilities {
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out;
-  }
+  .animate-fade-in { animation: fadeIn .45s ease-out both; }
+  .text-balance { text-wrap: balance; }
 }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Shared form treatment keeps the account and dashboard flows consistent. */
+input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+  color: #26352d;
+}
+input::placeholder, textarea::placeholder { color: #9a9d91; }
+input:focus, select:focus, textarea:focus {
+  border-color: #71834b !important;
+  outline: 0;
+  box-shadow: 0 0 0 3px rgb(113 131 75 / 16%);
+}
+.custom-scrollbar::-webkit-scrollbar { width: 7px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #d6d8ca; border-radius: 99px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

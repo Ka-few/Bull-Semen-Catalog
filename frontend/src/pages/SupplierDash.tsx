@@ -124,7 +124,7 @@ export default function SupplierDash() {
     }
 
     return (
-        <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 animate-fade-in">
+        <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
             <div className="flex items-center gap-3 mb-8">
                 <div className="p-3 bg-orange-100 rounded-xl">
                     <Store className="h-8 w-8 text-orange-600" />
@@ -185,7 +185,7 @@ export default function SupplierDash() {
                     {/* Orders Section */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                         <h2 className="text-xl font-bold mb-5 flex items-center text-gray-800">
-                            <Package className="mr-2 h-6 w-6 text-blue-600" />
+                            <Package className="mr-2 h-6 w-6 text-green-600" />
                             Pickups Assigned to You
                         </h2>
                         {orders.length === 0 ? (
@@ -201,7 +201,7 @@ export default function SupplierDash() {
                                             <span className="font-bold text-gray-800">Order #{String(order.id).padStart(4, '0')}</span>
                                             <span className={`px-2.5 py-1 rounded-full text-xs font-bold capitalize ${
                                                 order.order_status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                                                order.order_status === 'allocated' ? 'bg-blue-100 text-blue-700' :
+                                                order.order_status === 'allocated' ? 'bg-green-100 text-green-700' :
                                                 order.order_status === 'fetched_by_vet' ? 'bg-purple-100 text-purple-700' :
                                                 'bg-green-100 text-green-700'
                                             }`}>
@@ -220,7 +220,7 @@ export default function SupplierDash() {
                                             <ul className="space-y-1.5">
                                                 {order.items?.map((item: any) => (
                                                     <li key={item.id} className="text-sm flex items-center text-gray-700">
-                                                        <span className="bg-blue-50 text-blue-700 text-xs font-bold px-2 py-0.5 rounded mr-2">{item.quantity}x</span> 
+                                                        <span className="bg-green-50 text-green-700 text-xs font-bold px-2 py-0.5 rounded mr-2">{item.quantity}x</span> 
                                                         <span className="font-medium">{item.bull_name}</span>
                                                     </li>
                                                 ))}
@@ -239,20 +239,20 @@ export default function SupplierDash() {
                         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-xl font-bold flex items-center text-gray-800">
-                                    <Database className="mr-2 h-6 w-6 text-indigo-600" />
+                                    <Database className="mr-2 h-6 w-6 text-amber-600" />
                                     Semen Inventory Management
                                 </h2>
                                 <button 
                                     onClick={() => setShowAddForm(!showAddForm)}
-                                    className="flex items-center text-sm bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl font-bold hover:bg-indigo-100 transition"
+                                    className="flex items-center text-sm bg-amber-50 text-amber-700 px-4 py-2 rounded-xl font-bold hover:bg-amber-100 transition"
                                 >
                                     {showAddForm ? 'Cancel' : <><PlusCircle className="h-4 w-4 mr-1.5" /> Add Stock</>}
                                 </button>
                             </div>
 
                             {showAddForm && (
-                                <form onSubmit={handleAddOrUpdateInventory} className="bg-indigo-50 p-4 rounded-lg mb-6 border border-indigo-100">
-                                    <h3 className="font-semibold text-indigo-800 mb-3">Add or Update Semen Stock</h3>
+                                <form onSubmit={handleAddOrUpdateInventory} className="bg-amber-50 p-4 rounded-lg mb-6 border border-amber-100">
+                                    <h3 className="font-semibold text-amber-800 mb-3">Add or Update Semen Stock</h3>
                                     <div className="flex flex-col md:flex-row gap-4">
                                         <div className="flex-1">
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Select Bull Semen</label>
@@ -260,7 +260,7 @@ export default function SupplierDash() {
                                                 value={selectedBullId} 
                                                 onChange={e => setSelectedBullId(e.target.value)}
                                                 required
-                                                className="w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                                                className="w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-amber-500 focus:border-amber-500"
                                             >
                                                 <option value="">-- Choose Bull --</option>
                                                 {globalBulls.map(b => (
@@ -276,16 +276,16 @@ export default function SupplierDash() {
                                                 value={addQuantity}
                                                 onChange={e => setAddQuantity(e.target.value)}
                                                 required
-                                                className="w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                                                className="w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-amber-500 focus:border-amber-500"
                                             />
                                         </div>
                                         <div className="flex items-end">
-                                            <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-md font-bold hover:bg-indigo-700 transition">
+                                            <button type="submit" className="bg-amber-600 text-white px-4 py-2 rounded-md font-bold hover:bg-amber-700 transition">
                                                 Save
                                             </button>
                                         </div>
                                     </div>
-                                    <p className="text-xs text-indigo-600 mt-2">If the bull is already in your inventory, this will overwrite the quantity.</p>
+                                    <p className="text-xs text-amber-600 mt-2">If the bull is already in your inventory, this will overwrite the quantity.</p>
                                 </form>
                             )}
 
@@ -328,7 +328,7 @@ export default function SupplierDash() {
                                                                 setShowAddForm(true);
                                                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                                                             }}
-                                                            className="text-indigo-600 hover:text-indigo-900 p-1"
+                                                            className="text-amber-600 hover:text-amber-900 p-1"
                                                             title="Edit Quantity"
                                                         >
                                                             <Edit2 className="h-5 w-5 inline" />

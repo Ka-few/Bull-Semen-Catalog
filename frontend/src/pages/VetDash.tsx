@@ -6,9 +6,9 @@ import toast from 'react-hot-toast';
 
 const STATUS_CONFIG: Record<string, { color: string; label: string; icon: React.ReactNode }> = {
     pending:        { color: 'bg-yellow-100 text-yellow-800', label: 'Pending Payment', icon: <Clock className="h-4 w-4" /> },
-    allocated:      { color: 'bg-blue-100 text-blue-800',    label: 'Allocated to You', icon: <Stethoscope className="h-4 w-4" /> },
+    allocated:      { color: 'bg-green-100 text-green-800',    label: 'Allocated to You', icon: <Stethoscope className="h-4 w-4" /> },
     processing:     { color: 'bg-purple-100 text-purple-800', label: 'Processing', icon: <Package className="h-4 w-4" /> },
-    fetched_by_vet: { color: 'bg-indigo-100 text-indigo-800', label: 'Semen Fetched', icon: <Truck className="h-4 w-4" /> },
+    fetched_by_vet: { color: 'bg-amber-100 text-amber-800', label: 'Semen Fetched', icon: <Truck className="h-4 w-4" /> },
     completed:      { color: 'bg-green-100 text-green-800',   label: 'Completed', icon: <CheckCircle className="h-4 w-4" /> },
     cancelled:      { color: 'bg-red-100 text-red-800',       label: 'Cancelled', icon: null },
 };
@@ -104,7 +104,7 @@ const VetDash = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center p-16">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-green-600"></div>
             </div>
         );
     }
@@ -114,10 +114,10 @@ const VetDash = () => {
     const doneOrders     = orders.filter(o => o.order_status === 'completed');
 
     return (
-        <div className="p-4 md:p-8 max-w-6xl mx-auto space-y-8 animate-fade-in">
+        <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
             <div className="flex items-center gap-3 mb-8">
-                <div className="p-3 bg-blue-100 rounded-xl">
-                    <Stethoscope className="h-8 w-8 text-blue-600" />
+                <div className="p-3 bg-green-100 rounded-xl">
+                    <Stethoscope className="h-8 w-8 text-green-600" />
                 </div>
                 <div>
                     <h2 className="text-3xl font-bold text-gray-800">Veterinary Dashboard</h2>
@@ -145,7 +145,7 @@ const VetDash = () => {
                         </div>
                         <p className="text-xs text-gray-400">Nairobi hint: lat -1.2921, lng 36.8219</p>
                         <input type="number" placeholder="Service Fee (KES)" value={fee} onChange={e => setFee(e.target.value)} required className="p-3 border rounded-lg w-full" />
-                        <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700 transition">
+                        <button type="submit" className="w-full bg-green-600 text-white p-3 rounded-lg font-bold hover:bg-green-700 transition">
                             Submit Profile for Verification
                         </button>
                     </form>
@@ -166,7 +166,7 @@ const VetDash = () => {
                                 <input type="number" step="any" placeholder="Longitude" value={longitude} onChange={e => setLongitude(e.target.value)} required className="p-3 border rounded-lg text-sm" />
                                 <input type="number" placeholder="Service Fee (KES)" value={fee} onChange={e => setFee(e.target.value)} required className="p-3 border rounded-lg w-full text-sm" />
                                 <div className="flex gap-2 mt-2">
-                                    <button type="submit" className="flex-1 bg-blue-600 text-white p-2 rounded-lg font-bold hover:bg-blue-700 transition text-sm">
+                                    <button type="submit" className="flex-1 bg-green-600 text-white p-2 rounded-lg font-bold hover:bg-green-700 transition text-sm">
                                         Save
                                     </button>
                                     <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 bg-gray-300 text-gray-800 p-2 rounded-lg font-bold hover:bg-gray-400 transition text-sm">
@@ -177,11 +177,11 @@ const VetDash = () => {
                         ) : (
                             <>
                                 <div className="text-center mb-6 relative">
-                                    <button onClick={startEditing} className="absolute right-0 top-0 text-blue-500 hover:bg-blue-50 p-2 rounded-full transition" title="Edit Profile">
+                                    <button onClick={startEditing} className="absolute right-0 top-0 text-green-500 hover:bg-green-50 p-2 rounded-full transition" title="Edit Profile">
                                         <Edit2 className="w-5 h-5"/>
                                     </button>
-                                    <div className="w-20 h-20 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-sm">
-                                        <Stethoscope className="h-10 w-10 text-blue-600" />
+                                    <div className="w-20 h-20 bg-linear-to-br from-green-50 to-green-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-sm">
+                                        <Stethoscope className="h-10 w-10 text-green-600" />
                                     </div>
                                     <h3 className="font-bold text-gray-800 text-xl">{vetProfile.full_name}</h3>
                                     <p className="text-sm text-gray-500 mt-1 flex items-center justify-center gap-1">
@@ -207,7 +207,7 @@ const VetDash = () => {
                                 <hr className="my-6 border-gray-100" />
                                 <div className="grid grid-cols-3 text-center text-sm gap-2">
                                     <div>
-                                        <p className="font-bold text-blue-600 text-xl">{pendingOrders.length}</p>
+                                        <p className="font-bold text-green-600 text-xl">{pendingOrders.length}</p>
                                         <p className="text-gray-400 text-xs">Pending</p>
                                     </div>
                                     <div>
@@ -228,11 +228,11 @@ const VetDash = () => {
 
                         {/* New Requests Banner */}
                         {pendingOrders.length > 0 && (
-                            <div className="bg-blue-600 text-white rounded-xl p-4 flex items-center gap-3 animate-pulse">
+                            <div className="bg-green-600 text-white rounded-xl p-4 flex items-center gap-3 animate-pulse">
                                 <Stethoscope className="h-6 w-6 shrink-0" />
                                 <div>
                                     <p className="font-bold">You have {pendingOrders.length} new service request{pendingOrders.length > 1 ? 's' : ''}!</p>
-                                    <p className="text-blue-100 text-sm">Review the orders below and mark your progress.</p>
+                                    <p className="text-green-100 text-sm">Review the orders below and mark your progress.</p>
                                 </div>
                             </div>
                         )}
@@ -275,7 +275,7 @@ const VetDash = () => {
                                                     <ul className="space-y-2">
                                                         {order.items?.map((item: any) => (
                                                             <li key={item.id} className="text-sm text-gray-700 flex items-center gap-2">
-                                                                <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-bold">{item.quantity}×</span> 
+                                                                <span className="bg-green-50 text-green-700 px-2 py-0.5 rounded font-bold">{item.quantity}×</span> 
                                                                 <span className="font-medium">{item.bull_name}</span>
                                                             </li>
                                                         ))}
@@ -296,9 +296,9 @@ const VetDash = () => {
                                                 <div className="space-y-3">
                                                     <p className="text-xs text-gray-400 font-bold uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3"/> Delivery Location</p>
                                                     {order.delivery_lat ? (
-                                                        <div className="bg-blue-50/50 p-3 rounded-lg border border-blue-100">
-                                                            <a href={`https://maps.google.com/?q=${order.delivery_lat},${order.delivery_lng}`} target="_blank" rel="noreferrer" className="text-sm text-blue-700 font-mono flex items-center gap-1 hover:underline">
-                                                                <MapPin className="h-4 w-4 text-blue-500" />
+                                                        <div className="bg-green-50/50 p-3 rounded-lg border border-green-100">
+                                                            <a href={`https://maps.google.com/?q=${order.delivery_lat},${order.delivery_lng}`} target="_blank" rel="noreferrer" className="text-sm text-green-700 font-mono flex items-center gap-1 hover:underline">
+                                                                <MapPin className="h-4 w-4 text-green-500" />
                                                                 {Number(order.delivery_lat).toFixed(4)}, {Number(order.delivery_lng).toFixed(4)}
                                                             </a>
                                                         </div>

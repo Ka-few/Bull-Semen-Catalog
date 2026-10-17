@@ -115,7 +115,7 @@ const AdminDash = () => {
   };
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 animate-fade-in">
+    <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center gap-3 mb-8">
         <div className="p-3 bg-gray-800 rounded-xl">
           <ShieldAlert className="h-8 w-8 text-white" />
@@ -139,14 +139,14 @@ const AdminDash = () => {
               <PlusCircle className="w-5 h-5"/> {editingBullId ? 'Update Bull' : 'Add Quick Bull'}
             </h4>
             <div className="grid grid-cols-2 gap-4">
-              <input type="text" placeholder="Name" value={newBullName} onChange={e => setNewBullName(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
-              <input type="text" placeholder="Breed" value={newBullBreed} onChange={e => setNewBullBreed(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
-              <input type="number" placeholder="Price (KES)" value={newBullPrice} onChange={e => setNewBullPrice(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
-              <input type="number" placeholder="Milk Yield (kg)" value={newBullMilk} onChange={e => setNewBullMilk(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
-              <input type="text" placeholder="Image URL (optional)" value={newBullImage} onChange={e => setNewBullImage(e.target.value)} className="col-span-2 p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-200" />
+              <input type="text" placeholder="Name" value={newBullName} onChange={e => setNewBullName(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-green-200" />
+              <input type="text" placeholder="Breed" value={newBullBreed} onChange={e => setNewBullBreed(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-green-200" />
+              <input type="number" placeholder="Price (KES)" value={newBullPrice} onChange={e => setNewBullPrice(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-green-200" />
+              <input type="number" placeholder="Milk Yield (kg)" value={newBullMilk} onChange={e => setNewBullMilk(e.target.value)} required className="p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-green-200" />
+              <input type="text" placeholder="Image URL (optional)" value={newBullImage} onChange={e => setNewBullImage(e.target.value)} className="col-span-2 p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-green-200" />
             </div>
             <div className="flex gap-3">
-              <button type="submit" className="flex-1 p-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-md">
+              <button type="submit" className="flex-1 p-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition shadow-md">
                 {editingBullId ? 'Update Bull' : 'Add Bull to Catalog'}
               </button>
               {editingBullId && (
@@ -167,7 +167,7 @@ const AdminDash = () => {
                     <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">{bull.breed}</span>
                   </div>
                   <div className="flex gap-1">
-                    <button onClick={() => handleEditBull(bull)} className="text-blue-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition" title="Edit">
+                    <button onClick={() => handleEditBull(bull)} className="text-green-400 hover:text-green-600 p-2 rounded-lg hover:bg-green-50 transition" title="Edit">
                       <Edit2 className="w-5 h-5"/>
                     </button>
                     <button onClick={() => handleDeleteBull(bull.id)} className="text-red-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition" title="Delete">

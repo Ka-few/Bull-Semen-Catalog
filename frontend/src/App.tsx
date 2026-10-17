@@ -15,21 +15,24 @@ import Payment from './pages/Payment';
 import AdminDash from './pages/AdminDash';
 import VetDash from './pages/VetDash';
 import SupplierDash from './pages/SupplierDash';
+import Articles from './pages/Articles';
 
 function App() {
   return (
     <>
-      <Toaster position="top-right" toastOptions={{ duration: 4000, style: { background: '#333', color: '#fff' } }} />
+      <Toaster position="top-right" toastOptions={{ duration: 4000, style: { background: '#173b2a', color: '#fff', borderRadius: '14px', fontWeight: 600 } }} />
       <Router>
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-blue-200 selection:text-blue-900 flex flex-col">
+        <div className="min-h-screen bg-[#eef0dc] font-sans text-[#26352d] flex flex-col">
           <Navbar />
-          <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+          <main className="flex-1 w-full max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-10 py-6 md:py-10">
             <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/catalog" element={<Catalog />} />
+            <Route path="/articles" element={<Articles />} />
+            <Route path="/articles/:slug" element={<Articles />} />
 
             {/* Farmer Routes */}
             <Route element={<ProtectedRoute allowedRoles={['farmer']} />}>

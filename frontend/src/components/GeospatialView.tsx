@@ -89,7 +89,7 @@ export const GeospatialView: React.FC<GeospatialViewProps> = ({
                                 {vet.distance_km && <p className="text-xs text-gray-500">{vet.distance_km.toFixed(1)} km away</p>}
                                 {vet.service_fee && <p className="text-xs text-gray-500">Service Fee: ${vet.service_fee}</p>}
                                 <button 
-                                    className={`mt-2 w-full py-1 px-2 text-xs text-white rounded ${selectedVetId === vet.id ? 'bg-green-600' : 'bg-blue-500 hover:bg-blue-600'}`}
+                                    className={`mt-2 w-full py-1 px-2 text-xs text-white rounded ${selectedVetId === vet.id ? 'bg-green-600' : 'bg-green-500 hover:bg-green-600'}`}
                                     onClick={() => onSelectVet(vet.id)}
                                 >
                                     {selectedVetId === vet.id ? 'Selected Vet' : 'Select this Vet'}
@@ -108,7 +108,7 @@ export const GeospatialView: React.FC<GeospatialViewProps> = ({
                                 <p className="text-sm">{supplier.phone_number}</p>
                                 {supplier.distance_km && <p className="text-xs text-gray-500">{supplier.distance_km.toFixed(1)} km away</p>}
                                 <button 
-                                    className={`mt-2 w-full py-1 px-2 text-xs text-white rounded ${selectedSupplierId === supplier.id ? 'bg-orange-600' : 'bg-blue-500 hover:bg-blue-600'}`}
+                                    className={`mt-2 w-full py-1 px-2 text-xs text-white rounded ${selectedSupplierId === supplier.id ? 'bg-orange-600' : 'bg-green-500 hover:bg-green-600'}`}
                                     onClick={() => onSelectSupplier(supplier.id)}
                                 >
                                     {selectedSupplierId === supplier.id ? 'Selected Supplier' : 'Select for Pickup'}
